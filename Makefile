@@ -14,7 +14,7 @@ build:
 
 # lancement du projet
 launch:
-	cd build && make && clear && ./game
+	cd build && make && cls && game.exe
 
 # lancement le projet sous unix avec valgrind
 launch-unix:
