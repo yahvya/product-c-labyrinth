@@ -11,38 +11,6 @@
 
 - Bathily Yahaya : Developer
 
-## GitHub Structure
-
-### Branch
-
-- master (complete versions) - PROTECTED BY PULL REQUEST
-- dev (developed features) - PROTECTED BY PULL REQUEST
-- documentation (developed documentation) - PROTECTED BY PULL REQUEST
-- features/<branch_name>/<feature_name>
-
-### Folder structure
-
-- dev (application code)
-- documentation (documentation elements)
-- versions (application versions)
-- devtools (custom development tools)
-- .github/workflows (github action configs)
-
-### GitHub Flow
-
-- main : the main branch merge elements from (dev, documentation)
-- (dev, documentation) : these branches merge elements from feature branches
-- features/<branch_name>/<feature_name> : features branches are created from the <branch_name> branch
-
-### Commit norm
-
-Each commit line is prefixed by :
-
-- ADD : for new code
-- FIX : for changes due to a problem
-- MODIFY : for changes
-- DELETE : for deletion
-
 ## Prerequisites
 
 - Git
@@ -55,13 +23,10 @@ Each commit line is prefixed by :
 
 - GitHub : Code version manager
 - Make : Quick commands for utilities
-- Docker
+- Cmake
+- C
 
 ## Quick launch process
-
-### For the project
-
-- Launch the makefile command "project-print-init"
 
 ### For the game
 
