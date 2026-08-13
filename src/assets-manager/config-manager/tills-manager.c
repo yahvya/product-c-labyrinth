@@ -90,7 +90,7 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentDirPath){
                         FREE_RESOURCES_AND_QUIT
                     }
 
-                    strncpy(createdImage.id,(char*)readToken.data.scalar.value,sizeof(char) * (SUPPOSED_ID_MAX_LEN - 1));
+                    createdImage.id = atoi((char*)readToken.data.scalar.value);
                     memcpy(config->map + (config->countOfTills - 1),&createdImage,sizeof(ImageConfig));
 
                     // attente de la clé suivante

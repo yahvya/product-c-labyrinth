@@ -37,6 +37,7 @@ bool initializeGame(){
     SetWindowIcon(gameConfig->windowIcon);
     SetWindowSize(WINDOW_DEFAULT_WIDTH,WINDOW_DEFAULT_HEIGHT);
     SetWindowFocused();
+    // @todo Voir pour les FPS
     centerWindow();
 
     return true;

@@ -37,6 +37,8 @@ add_executable(game
         src/game/window-manager.h
         src/rendering/home-rendering.h
         src/rendering/home-rendering.c
+        src/rendering/map-rendering.c
+        src/rendering/map-rendering.h
 )
 
 target_link_libraries(game 

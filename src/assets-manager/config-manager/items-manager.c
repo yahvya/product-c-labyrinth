@@ -137,7 +137,7 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath){
                     }
 
                     // stockage des données dans la map
-                    strcpy(createdImage.id,lastId);
+                    createdImage.id = atoi(lastId);
                     memcpy(config->map + (config->countOfItems - 1),&createdImage,sizeof(ImageConfig));
 
                     fclose(file);

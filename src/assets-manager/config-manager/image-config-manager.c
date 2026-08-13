@@ -323,7 +323,6 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser,char* parentDirPath){
     };
 
     memset(config.description,0,sizeof(char) * SUPPOSED_DESCRIPTION_MAX_LEN);
-    memset(config.id,0,sizeof(char) * SUPPOSED_ID_MAX_LEN);
 
     int countOfElementsToLoad = 4;
     bool nextIsKey = false;
@@ -468,7 +467,7 @@ void printImageConfig(ImageConfig* config,char* toPrintBefore){
     assert(config != NULL && "Configuration d'image NULL pour l'affichage");
 
     printf("\n"CC_BBLUE"%sConfiguration d'image :"CC_RESET,TO_PRINT);
-    printf("\n"CC_BWHITE"%s\tId: "CC_RESET"%s",TO_PRINT,config->id);
+    printf("\n"CC_BWHITE"%s\tId: "CC_RESET"%d",TO_PRINT,config->id);
     printf("\n"CC_BWHITE"%s\tType: "CC_RESET"%d",TO_PRINT,config->type);
     printf("\n"CC_BWHITE"%s\tDescription: "CC_RESET"%s",TO_PRINT,config->description);
     printf("\n"CC_BWHITE"%s\tRotation: "CC_RESET"%d",TO_PRINT,config->rotation);

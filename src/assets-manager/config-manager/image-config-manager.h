@@ -4,7 +4,7 @@
      * @brief Longueur supposée d'une description d'élément
      */
     #define SUPPOSED_DESCRIPTION_MAX_LEN 300
-    
+
     /**
      * @brief Longueur supposée d'un id d'élément
      */
@@ -52,7 +52,7 @@
         /**
          * @brief Id possible de l'image
          */
-        char id[SUPPOSED_ID_MAX_LEN];
+        int id;
 
         /**
          * @brief Description de l'item

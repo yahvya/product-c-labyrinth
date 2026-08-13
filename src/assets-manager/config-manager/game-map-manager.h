@@ -1,7 +1,6 @@
 #if !defined(ASSETS_MANAGER_CONFIG_MANAGER_GAME_MAP_MANAGER_H)
 #define ASSETS_MANAGER_CONFIG_MANAGER_GAME_MAP_MANAGER_H
     #include "yaml.h"
-    #include <stdbool.h>
     #include "../../utils/generic-list/generic-list.h"
 
     /**

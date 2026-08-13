@@ -43,4 +43,12 @@
      * @param toPrintBefore Chaine à afficher avant chaque ligne de configuration
      */
     void printTillsConfig(TillsConfig* config,char* toPrintBefore);
+
+    /**
+     * @brief Fourni une till de la configuration à partir de son id
+     * @param tillId Identifiant de la till
+     * @param tillsConfig
+     * @return
+     */
+    ImageConfig* getTillImageConfigFromId(int tillId, TillsConfig tillsConfig);
 #endif
