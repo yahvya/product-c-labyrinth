@@ -3,6 +3,7 @@
 #include <string.h>
 #include <assert.h>
 #include "custom-color.h"
+#include "../../game/game.h"
 
 /**
  * @brief Ternaire de choix de l'affichage
@@ -323,6 +324,11 @@ void freeEnemiesConfig(EnemiesConfig* config,bool freeContainer){
 }
 
 void printEnemiesConfig(EnemiesConfig* enemiesConfig, char* toPrintBefore){
+    if (GAME_IS_IN_TEST_MODE != 1)
+    {
+        return;
+    }
+
     assert(enemiesConfig != NULL && "Configuration des ennemies NULL pour l'affichage");
 
     printf("\n"CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);

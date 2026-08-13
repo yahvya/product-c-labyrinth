@@ -3,6 +3,7 @@
 #include <assert.h>
 #include "custom-color.h"
 #include "raylib.h"
+#include "../../game/game.h"
 
 /**
  * @brief Assertions sur les fonctions de chargement
@@ -464,6 +465,11 @@ void freeImageConfig(ImageConfig* config,bool freeContainer){
 }
 
 void printImageConfig(ImageConfig* config,char* toPrintBefore){
+    if (GAME_IS_IN_TEST_MODE != 1)
+    {
+        return;
+    }
+
     assert(config != NULL && "Configuration d'image NULL pour l'affichage");
 
     printf("\n"CC_BBLUE"%sConfiguration d'image :"CC_RESET,TO_PRINT);

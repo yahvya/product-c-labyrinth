@@ -3,8 +3,6 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "../../../libs/raylib-5.0/src/raylib.h"
-
 /**
  * @brief Vérifie si la valeur fournie est NULL et libère les ressources au cas où
  */
@@ -51,6 +49,8 @@ void* loadConfig(char* path,void* (*treatmentFunction)(yaml_parser_t*,char*)){
 }
 
 GameConfig* loadGameConfig(){
+    TraceLog(LOG_DEBUG, "Loading game configuration");
+
     // allocation de la configuration de jeux
     GameConfig* config = malloc(sizeof(GameConfig) );
 
@@ -69,18 +69,23 @@ GameConfig* loadGameConfig(){
     // chargement des configurations
     config->enemiesConfig = loadConfig(ENEMIES_CONFIG_FILE_PATH,loadEnemies);
     CHECK_NULL_AND_QUIT(config->enemiesConfig,"Echec de chargement de la configuration des ennemies")
+    TraceLog(LOG_DEBUG, "Enemies configuration loaded");
 
     config->heroesConfig = loadConfig(HEROES_CONFIG_FILE_PATH,loadHeroesConfig);
     CHECK_NULL_AND_QUIT(config->heroesConfig,"Echec de chargement de la configuration des héros")
+    TraceLog(LOG_DEBUG, "Heroes configuration loaded");
 
     config->tillsConfig = loadConfig(TILLS_CONFIG_FILE_PATH,loadTillsConfig);
     CHECK_NULL_AND_QUIT(config->tillsConfig,"Echec de chargement de la configuration des tills")
+    TraceLog(LOG_DEBUG, "Tills configuration loaded");
 
     config->itemsConfig = loadConfig(ITEMS_CONFIG_FILE_PATH,loadItemsConfig);
     CHECK_NULL_AND_QUIT(config->itemsConfig,"Echec de chargement de la configuration des items")
+    TraceLog(LOG_DEBUG, "Items configuration loaded");
 
     config->homeMapConfig = loadConfig(HOME_MAP_CONFIG_FILE_PATH,loadGameMapConfig);
     CHECK_NULL_AND_QUIT(config->homeMapConfig,"Echec de chargement de la map d'accueil")
+    TraceLog(LOG_DEBUG, "Map configuration loaded");
 
     // chargement de l'icône de la fenêtre
     config->windowIcon = LoadImage(GAME_WINDOW_ICON_FILE_PATH);
@@ -89,6 +94,9 @@ GameConfig* loadGameConfig(){
     {
         CHECK_NULL_AND_QUIT(NULL, "Echec de chargement de l'icone de la fenêtre")
     }
+
+    TraceLog(LOG_DEBUG, "Window icon loaded");
+    TraceLog(LOG_INFO, "Game configurations loaded");
 
     return config;
 }
@@ -146,6 +154,8 @@ bool loadHeroesImages(GameConfig* gameConfig){
 }
 
 void freeGameConfig(GameConfig* config,bool freeContainer){
+    TraceLog(LOG_DEBUG, "Starting to free game configuration");
+
     assert(config != NULL && "La configuration de jeux fournie est NULL pour la libération");
 
     if(config->enemiesConfig != NULL)
@@ -167,4 +177,6 @@ void freeGameConfig(GameConfig* config,bool freeContainer){
 
     if(freeContainer)
         free(config);
+
+    TraceLog(LOG_INFO, "Game configurations memory are free");
 }

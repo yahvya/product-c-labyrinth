@@ -2,6 +2,7 @@
 #include "../assets/assets.h"
 #include <assert.h>
 #include "custom-color.h"
+#include "../../game/game.h"
 
 /**
  * @brief Macro de libération des ressources de parsing
@@ -154,6 +155,11 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath){
 }
 
 void printItemsConfig(ItemsConfig * config,char* toPrintBefore){
+    if (GAME_IS_IN_TEST_MODE != 1)
+    {
+        return;
+    }
+
     assert(config != NULL && "Configuration d'items NULL pour l'affichage");
 
     printf("\n"CC_BLUE"%s------------------------------------------------------------------------"CC_RESET,TO_PRINT);

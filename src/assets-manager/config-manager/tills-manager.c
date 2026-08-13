@@ -1,7 +1,7 @@
 #include "./tills-manager.h"
 #include <stdio.h>
 #include <assert.h>
-#include <stdbool.h>
+#include "../../game/game.h"
 #include <string.h>
 #include "custom-color.h"
 #include "../assets/assets.h"
@@ -120,6 +120,11 @@ void freeTillsConfig(TillsConfig* config,bool freeContainer){
 }
 
 void printTillsConfig(TillsConfig* config,char* toPrintBefore){
+    if (GAME_IS_IN_TEST_MODE != 1)
+    {
+        return;
+    }
+
     assert(config != NULL && "Configuration de tills NULL pour l'affichage");
 
     printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);

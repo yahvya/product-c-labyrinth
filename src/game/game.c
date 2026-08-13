@@ -2,7 +2,6 @@
 #include "../rendering/home-rendering.h"
 #include <stddef.h>
 #include "raylib.h"
-#include "../../libs/raylib-5.0/src/raylib.h"
 
 /**
  * @brief Chargement d'image ou libération des ressources du jeux
@@ -16,6 +15,8 @@
 static GameConfig* gameConfig = NULL;
 
 bool initializeGame(){
+    SetTraceLogLevel(GAME_IS_IN_TEST_MODE == 1 ? LOG_ALL : LOG_ERROR | LOG_WARNING | LOG_FATAL);
+
     InitWindow(0,0,"Initialize raylib");
 
     if(!IsWindowReady())
@@ -25,8 +26,6 @@ bool initializeGame(){
 
     if(gameConfig == NULL)
         return false;
-
-    printMapConfig(gameConfig->homeMapConfig);
 
     LOAD_OR_QUIT(loadItemsImages,gameConfig)
     LOAD_OR_QUIT(loadTillsImages,gameConfig)
@@ -40,10 +39,14 @@ bool initializeGame(){
     // @todo Voir pour les FPS
     centerWindow();
 
+    TraceLog(LOG_INFO, "Game initialized");
+
     return true;
 }
 
 void startGame(){
+    TraceLog(LOG_INFO, "Game started");
+
     GameRenderingConfig gameRenderingConfig = {
         .gameConfig = gameConfig,
         .currentRenderingFunction = renderGameHome
@@ -65,4 +68,6 @@ void startGame(){
 void closeGame(){
     CloseWindow();
     freeGameConfig(gameConfig,true);
+
+    TraceLog(LOG_INFO, "Game closed");
 }

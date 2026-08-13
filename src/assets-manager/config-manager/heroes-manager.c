@@ -2,6 +2,7 @@
 #include "../assets/assets.h"
 #include <assert.h>
 #include "custom-color.h"
+#include "../../game/game.h"
 
 /**
  * @brief Ternaire de choix de l'affichage
@@ -333,6 +334,11 @@ void freeHeroesConfig(HeroesConfig* config,bool freeContainer){
 }
 
 void printHeroesConfig(HeroesConfig* heroesConfig, char* toPrintBefore){
+    if (GAME_IS_IN_TEST_MODE != 1)
+    {
+        return;
+    }
+
     assert(heroesConfig != NULL && "Configuration de heros NULL pour l'affichage");
 
     printf("\n"CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);

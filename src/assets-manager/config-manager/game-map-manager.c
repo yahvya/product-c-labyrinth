@@ -1,6 +1,7 @@
 #include "./game-map-manager.h"
 #include "custom-color.h"
 #include <assert.h>
+#include "../../game/game.h"
 
 /**
  * @brief Libère les ressources et stoppe le parsing
@@ -505,6 +506,11 @@ void freeGameMapConfig(GameMapConfig* mapConfig,bool freeContainer){
 }
 
 void printMapConfig(GameMapConfig* config){
+    if (GAME_IS_IN_TEST_MODE != 1)
+    {
+        return;
+    }
+
     assert(config != NULL && "La map de jeux à libérer est NULL");
 
     printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
