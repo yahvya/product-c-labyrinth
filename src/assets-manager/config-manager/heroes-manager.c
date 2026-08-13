@@ -180,7 +180,7 @@ bool consumeHeroIn(yaml_parser_t* parser,yaml_token_t* token,HeroesConfig* confi
     assert(parentDirPath != NULL && "Le chemin fournie pour la consumation des données hero est NULL");
 
     int keyCount = 0;
-    HeroConfig hero;
+    HeroConfig hero = {0};
 
     do{
         char configFilePath[SUPPOSED_PATH_MAX_LEN];
@@ -314,8 +314,10 @@ void* loadHeroesConfig(yaml_parser_t *parser,char* parentDirPath){
 void freeHeroConfig(HeroConfig* config,bool freeContainer){
     assert(config != NULL && "Le hero fourni à la libération est NULL");
 
-    for(int i = 0; i < HERO_MAX_FOR_ARRAY_KEYS; i++)
-        freeImageConfig(config->actionsConfigs[i].framesConfig,true);
+    for(int i = 0; i < HERO_MAX_FOR_ARRAY_KEYS; i++){
+        if(config->actionsConfigs[i].framesConfig != NULL)
+            freeImageConfig(config->actionsConfigs[i].framesConfig,true);
+    }
 
     if(freeContainer)
         free(config);

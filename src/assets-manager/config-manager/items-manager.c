@@ -83,7 +83,6 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath){
                         FREE_RESOURCES_AND_QUIT
                     }
 
-                    config->countOfItems++;
                     config->map = tmpAddress;
 
                     // stockage de l'id
@@ -133,12 +132,14 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath){
 
                     if(createdImage.errorState){
                         fputs("\nEchec de parsing de la configuration d'image lors du parsing de configuration des items\n",stderr);
+                        freeImageConfig(&createdImage,false);
                         fclose(file);
                         FREE_RESOURCES_AND_QUIT
                     }
 
                     // stockage des données dans la map
                     createdImage.id = atoi(lastId);
+                    config->countOfItems++;
                     memcpy(config->map + (config->countOfItems - 1),&createdImage,sizeof(ImageConfig));
 
                     fclose(file);

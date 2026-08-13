@@ -47,8 +47,8 @@
     /**
      * @brief Fourni une till de la configuration à partir de son id
      * @param tillId Identifiant de la till
-     * @param tillsConfig
-     * @return
+     * @param tillsConfig Configuration des tills
+     * @return La configuration d'image de la till ou null si non trouvé
      */
-    ImageConfig* getTillImageConfigFromId(int tillId, TillsConfig tillsConfig);
+    ImageConfig* getTillImageConfigFromId(int tillId, TillsConfig* tillsConfig);
 #endif

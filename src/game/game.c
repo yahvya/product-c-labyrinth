@@ -66,8 +66,8 @@ void startGame(){
 }
 
 void closeGame(){
-    CloseWindow();
     freeGameConfig(gameConfig,true);
+    CloseWindow();
 
     TraceLog(LOG_INFO, "Game closed");
 }

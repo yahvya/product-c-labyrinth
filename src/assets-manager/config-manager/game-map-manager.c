@@ -213,6 +213,7 @@ bool consumeItems(GameMapConfig* config,yaml_parser_t* parser){
     while(true){
         if(!yaml_parser_scan(parser,&token)){
             fputs("\nEchec de recupération du token lors de la consumation des items",stderr);
+            free(newItemAddress);
             return false;
         }
 
@@ -221,6 +222,7 @@ bool consumeItems(GameMapConfig* config,yaml_parser_t* parser){
             token.type == YAML_STREAM_END_TOKEN
         ){
             yaml_token_delete(&token);
+            free(newItemAddress);
             return false;
         }
 
@@ -242,6 +244,7 @@ bool consumeItems(GameMapConfig* config,yaml_parser_t* parser){
                     if(!listAppend(&config->itemsConfig,newItemAddress)){
                         fputs("\nEchec d'allocation de la configuration d'item",stderr);
                         yaml_token_delete(&token);
+                        free(newItemAddress);
                         return false;
                     }
 
@@ -313,6 +316,7 @@ bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
     while(true){
         if(!yaml_parser_scan(parser,&token)){
             fputs("\nEchec de recupération du token lors de la consumation des ennemies",stderr);
+            free(newEnemyAddress);
             return false;
         }
 
@@ -321,6 +325,7 @@ bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
             token.type == YAML_STREAM_END_TOKEN
         ){
             yaml_token_delete(&token);
+            free(newEnemyAddress);
             return false;
         }
 
@@ -342,6 +347,7 @@ bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
                     if(!listAppend(&config->enemiesConfig, newEnemyAddress)){
                         fputs("\nEchec d'allocation de la configuration d'ennemie",stderr);
                         yaml_token_delete(&token);
+                        free(newEnemyAddress);
                         return false;
                     }
 

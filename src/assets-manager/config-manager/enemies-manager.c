@@ -171,7 +171,7 @@ bool consumeEnemyIn(yaml_parser_t* parser,yaml_token_t* token,EnemiesConfig * co
     assert(parentDirPath != NULL && "Le chemin fournie pour la consumation des données hero est NULL");
 
     int keyCount = 0;
-    EnemyConfig enemy;
+    EnemyConfig enemy = {0};
 
     do{
         char configFilePath[SUPPOSED_PATH_MAX_LEN];
@@ -304,8 +304,10 @@ void* loadEnemies(yaml_parser_t* parser,char* parentDirPath){
 void freeEnemyConfig(EnemyConfig* config,bool freeContainer){
     assert(config != NULL && "L'ennemie fourni à la libération est NULL");
 
-    for(int i = 0; i < ENEMY_MAX_FOR_ARRAY_KEYS; i++)
-        freeImageConfig(config->actionsMap[i].framesConfig,true);
+    for(int i = 0; i < ENEMY_MAX_FOR_ARRAY_KEYS; i++){
+        if(config->actionsMap[i].framesConfig != NULL)
+            freeImageConfig(config->actionsMap[i].framesConfig,true);
+    }
 
     if(freeContainer)
         free(config);

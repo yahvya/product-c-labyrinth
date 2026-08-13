@@ -65,6 +65,7 @@ GameConfig* loadGameConfig(){
     config->tillsConfig = NULL;
     config->itemsConfig = NULL;
     config->homeMapConfig = NULL;
+    config->windowIcon = (Image){0};
 
     // chargement des configurations
     config->enemiesConfig = loadConfig(ENEMIES_CONFIG_FILE_PATH,loadEnemies);
@@ -173,7 +174,8 @@ void freeGameConfig(GameConfig* config,bool freeContainer){
     if(config->homeMapConfig != NULL)
         freeGameMapConfig(config->homeMapConfig,true);
 
-    UnloadImage(config->windowIcon);
+    if(IsImageReady(config->windowIcon))
+        UnloadImage(config->windowIcon);
 
     if(freeContainer)
         free(config);

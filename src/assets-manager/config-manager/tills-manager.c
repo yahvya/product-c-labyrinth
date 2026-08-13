@@ -81,16 +81,17 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentDirPath){
                     }
 
                     // création de la configuration
-                    config->countOfTills++;
                     config->map = tmpAddress;
                     ImageConfig createdImage = createImageFromConfig(parser, parentDirPath);
-                    
+
                     if(createdImage.errorState){
                         fputs("\nEchec de parsing de la configuration d'image lors du parsing de configuration de tills\n",stderr);
+                        freeImageConfig(&createdImage,false);
                         FREE_RESOURCES_AND_QUIT
                     }
 
                     createdImage.id = atoi((char*)readToken.data.scalar.value);
+                    config->countOfTills++;
                     memcpy(config->map + (config->countOfTills - 1),&createdImage,sizeof(ImageConfig));
 
                     // attente de la clé suivante
@@ -151,4 +152,11 @@ void printTillsConfig(TillsConfig* config,char* toPrintBefore){
     }
 
     printf(CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
+}
+
+ImageConfig* getTillImageConfigFromId(int tillId, TillsConfig* tillsConfig)
+{
+    ImageConfig* tillConfig = tillsConfig->map + (tillId - 1);
+
+    return tillConfig->id == tillId ? tillConfig : NULL;
 }

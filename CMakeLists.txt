@@ -41,15 +41,19 @@ add_executable(game
         src/rendering/map-rendering.h
 )
 
-target_link_libraries(game 
+target_link_libraries(game
     yaml
     custom_color
     raylib
 )
 
-add_custom_command(
-    TARGET game PRE_BUILD
+target_compile_options(game PRIVATE -g -O0)
+
+add_custom_target(copy_resources ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${CMAKE_SOURCE_DIR}/resources"
     "${CMAKE_BINARY_DIR}/resources"
+    COMMENT "Copie des ressources vers le dossier de build"
 )
+
+add_dependencies(game copy_resources)

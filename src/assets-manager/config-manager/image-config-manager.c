@@ -22,6 +22,7 @@
  */
 #define FREE_LOADING_RAYLIB_IMAGE_AND_QUIT freeGenericList(&config->linkedImages,true);\
 config->linkedImages.errorState = true;\
+config->paths.items = config->paths.listStart;\
 return false;
 
 /**
