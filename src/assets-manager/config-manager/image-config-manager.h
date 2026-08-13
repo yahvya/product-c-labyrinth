@@ -13,7 +13,10 @@
     #include "../../utils/generic-list/generic-list.h"
     #include <yaml.h>
 
-        typedef enum{
+    /**
+     * @brief Type d'image
+     */
+    typedef enum{
         /**
          * @brief Image fixe
          */

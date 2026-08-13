@@ -37,7 +37,7 @@
         HERO_LEFT_WALK_ANIMATION,
         HERO_BACK_WALK_ANIMATION,
         /**
-         * @brief Clé pour défini la taille max des valeurs d'actions
+         * @brief Clé pour définir la taille max des valeurs d'actions
          */
         HERO_MAX_FOR_ARRAY_KEYS
     }HeroAction;
@@ -72,7 +72,7 @@
         char name[SUPPOSED_HERO_NAME_MAX_LEN];
 
         /**
-         * @brief If du héro
+         * @brief Identifiant du héro
          */
         char id[SUPPOSED_HERO_ID_MAX_LEN];
     }HeroConfig;

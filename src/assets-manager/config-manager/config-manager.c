@@ -98,7 +98,7 @@ bool loadTillsImages(GameConfig* gameConfig){
     assert(gameConfig != NULL && gameConfig->tillsConfig != NULL && "La configuration du jeux passé est NULL");
 
     for(int i = 0; i < gameConfig->tillsConfig->countOfTills; i++){
-        if(!loadLinkedImages(gameConfig->tillsConfig->map + 1))
+        if(!loadLinkedImages(gameConfig->tillsConfig->map + i))
             return false;
     }
 
