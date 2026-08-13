@@ -1,0 +1,57 @@
+# Suppressions pour le bruit des bibliothèques tierces (X11, glfw, chargeur
+
+{
+   x11-xrm-init
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   obj:*/libX11.so*
+}
+
+{
+   glfw-x11-init
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:_glfwInitX11
+}
+
+{
+   glfw-x11-connect
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:_glfwConnectX11
+}
+
+{
+   dl-open-worker
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:_dl_open
+}
+
+{
+   dl-new-object
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:_dl_new_object
+}
+
+{
+   mesa-llvm-init
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   obj:*/libLLVM*
+}
+
+{
+   libstdcxx-static-init
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   obj:*/libstdc++.so*
+}
