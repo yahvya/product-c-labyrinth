@@ -2,6 +2,7 @@
 #include "../rendering/home-rendering.h"
 #include <stddef.h>
 #include "raylib.h"
+#include "../../libs/raylib-5.0/src/raylib.h"
 
 /**
  * @brief Chargement d'image ou libération des ressources du jeux
@@ -33,6 +34,7 @@ bool initializeGame(){
     LOAD_OR_QUIT(loadHeroesImages,gameConfig)
 
     SetWindowTitle("Labyrinth Game");
+    SetWindowIcon(gameConfig->windowIcon);
     SetWindowSize(WINDOW_DEFAULT_WIDTH,WINDOW_DEFAULT_HEIGHT);
     SetWindowFocused();
     centerWindow();

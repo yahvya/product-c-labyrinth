@@ -3,6 +3,8 @@
 #include <assert.h>
 #include <stdio.h>
 
+#include "../../../libs/raylib-5.0/src/raylib.h"
+
 /**
  * @brief Vérifie si la valeur fournie est NULL et libère les ressources au cas où
  */
@@ -80,6 +82,14 @@ GameConfig* loadGameConfig(){
     config->homeMapConfig = loadConfig(HOME_MAP_CONFIG_FILE_PATH,loadGameMapConfig);
     CHECK_NULL_AND_QUIT(config->homeMapConfig,"Echec de chargement de la map d'accueil")
 
+    // chargement de l'icône de la fenêtre
+    config->windowIcon = LoadImage(GAME_WINDOW_ICON_FILE_PATH);
+
+    if (!IsImageReady(config->windowIcon))
+    {
+        CHECK_NULL_AND_QUIT(NULL, "Echec de chargement de l'icone de la fenêtre")
+    }
+
     return config;
 }
 
@@ -152,6 +162,8 @@ void freeGameConfig(GameConfig* config,bool freeContainer){
 
     if(config->homeMapConfig != NULL)
         freeGameMapConfig(config->homeMapConfig,true);
+
+    UnloadImage(config->windowIcon);
 
     if(freeContainer)
         free(config);

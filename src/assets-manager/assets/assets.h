@@ -31,6 +31,11 @@
     #define HOME_MAP_CONFIG_FILE_PATH RESOURCES_PATH"/home-config/map.yaml"
 
     /**
+     * Chemin du fichier d'icône de la fenêtre de l'application
+     */
+    #define GAME_WINDOW_ICON_FILE_PATH RESOURCES_PATH"/icon/game-icon.png"
+
+    /**
      * @brief Longueur maximale supposée d'un chemin
      */
     #define SUPPOSED_PATH_MAX_LEN 300

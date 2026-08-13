@@ -6,9 +6,10 @@
     #include "./items-manager.h"
     #include "./tills-manager.h"
     #include "./game-map-manager.h"
+    #include "raylib.h"
 
     /**
-     * @brief Charge la configuration de jeux
+     * @brief configuration de jeux
      */
     typedef struct{
         /**
@@ -35,6 +36,11 @@
          * @brief Configuration de la map d'affichage de la page d'accueil
          */
         GameMapConfig* homeMapConfig;
+
+        /**
+         * Icone de la fenêtre de jeu
+         */
+        Image windowIcon;
     }GameConfig;
 
     /**

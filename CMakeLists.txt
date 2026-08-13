@@ -12,7 +12,7 @@ add_subdirectory("libs/custom-color")
 add_subdirectory("libs/raylib-5.0")
 
 add_executable(game 
-        src/game.c
+        src/labyrinth.c
         src/assets-manager/assets/assets.h
         src/assets-manager/assets/assets.c
         src/assets-manager/config-manager/config-manager.c
