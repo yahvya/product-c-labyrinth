@@ -77,7 +77,7 @@
      */
     typedef struct{
         /**
-         * @brief Map des ennemies
+         * @brief Map des ennemies. Tableau indicé par l'id converti en entier - 1. Il est conseillé d'utiliser les fonctions d'accès
          */
         EnemiesMap map;
 

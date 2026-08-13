@@ -14,7 +14,7 @@
      */
     typedef struct{ 
         /**
-         * @brief Map des items
+         * @brief Map des items. Tableau indicé par l'id converti en entier - 1. Il est conseillé d'utiliser les fonctions d'accès
          */
         ItemsMap map;
         /**

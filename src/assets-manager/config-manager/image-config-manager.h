@@ -32,7 +32,7 @@
     }ImageType;
 
     /**
-     * @brief Configuration d'image
+     * @brief Configuration d'image ou de séquence
      */
     typedef struct{
         /**

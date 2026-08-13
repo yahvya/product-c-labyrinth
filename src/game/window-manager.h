@@ -3,6 +3,15 @@
     #include <stdbool.h>
 
     /**
+     * @brief Largeur par défaut de la fenêtre
+     */
+    #define WINDOW_DEFAULT_WIDTH 500
+    /**
+     * @brief Hauteur par défaut de la fenêtre
+     */
+    #define WINDOW_DEFAULT_HEIGHT 300
+
+    /**
      * @brief Configuration de rendu
      */
     typedef struct{

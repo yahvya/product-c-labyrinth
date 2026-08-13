@@ -17,7 +17,7 @@
          */
         int countOfTills;
         /**
-         * @brief Nombre de tills
+         * @brief Liste des tills. Tableau indicé par l'id converti en entier - 1. Il est conseillé d'utiliser les fonctions d'accès
          */
         TillsMap map;
     }TillsConfig;

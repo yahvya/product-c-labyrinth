@@ -1,17 +1,13 @@
 #if !defined(GAME_GAME_H)
 #define GAME_GAME_H
+    /**
+     * @brief Défini si le jeux est en mode de test / développement
+     */
+    #define GAME_IS_IN_TEST_MODE 1
+
     #include <stdbool.h>
     #include "./window-manager.h"
     #include "../assets-manager/config-manager/config-manager.h"
-
-    /**
-     * @brief Largeur par défaut de la fenêtre
-     */
-    #define WINDOW_DEFAULT_WIDTH 500
-    /**
-     * @brief Hauteur par défaut de la fenêtre
-     */
-    #define WINDOW_DEFAULT_HEIGHT 300
 
     /**
      * @brief Configuration de rendu du jeux

@@ -78,7 +78,7 @@
     }HeroConfig;
 
     /**
-     * @brief Map des héros
+     * @brief Liste des héros
      */
     typedef HeroConfig* HeroesMap;
 
@@ -86,6 +86,9 @@
      * @brief Configuration des héros
      */
     typedef struct{
+        /**
+         * Liste des héros. Tableau indicé par l'id converti en entier - 1. Il est conseillé d'utiliser les fonctions d'accès
+         */
         HeroesMap map;
 
         /**
