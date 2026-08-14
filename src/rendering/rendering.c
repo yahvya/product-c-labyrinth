@@ -1,6 +1,6 @@
 #include "rendering.h"
 
-bool renderImageFromConfig(ImageConfig* imageConfig, const GameMapConfig* mapConfig, Vector2 texturePosition, int ticksPerFrame)
+bool renderImageFromConfig(ImageConfig* imageConfig, const GameMapConfig* mapConfig, Vector2 texturePosition, const int ticksPerFrame)
 {
     // rotation des images pour avoir l'animation visuelle
     const GenericListItem* currentItem = imageConfig->linkedImages.items;

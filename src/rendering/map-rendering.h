@@ -1,5 +1,21 @@
 #if !defined(GAME_MAP_RENDERING_H)
 #define GAME_MAP_RENDERING_H
+
+/**
+ * @brief Nombre de rendus entre deux changements de frame d'animation des ennemies
+ */
+#define ENEMY_ANIMATION_TICKS_PER_FRAME 3
+
+/**
+ * @brief Nombre de rendus entre deux changements de frame d'animation des items
+ */
+#define ITEM_ANIMATION_TICKS_PER_FRAME 15
+
+/**
+ * @brief Nombre de rendus entre deux changements de frame d'animation des tills
+ */
+#define TILL_ANIMATION_TICKS_PER_FRAME 6
+
 #include "../assets-manager/config-manager/config-manager.h"
 #include "../assets-manager/config-manager/game-map-manager.h"
 
