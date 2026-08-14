@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.30.1)
 
 project(c_labyrinth
-    DESCRIPTION "Mini jeux 2D de labyrinthe"
-    VERSION "24.07.24"
+        DESCRIPTION "Mini jeux 2D de labyrinthe"
+        VERSION "24.07.24"
 )
 
 add_compile_options(-UNDEBUG)
@@ -11,7 +11,7 @@ add_subdirectory("libs/libyaml-0.2.5")
 add_subdirectory("libs/custom-color")
 add_subdirectory("libs/raylib-5.0")
 
-add_executable(game 
+add_executable(game
         src/labyrinth.c
         src/assets-manager/assets/assets.h
         src/assets-manager/assets/assets.c
@@ -39,21 +39,23 @@ add_executable(game
         src/rendering/home-rendering.c
         src/rendering/map-rendering.c
         src/rendering/map-rendering.h
+        src/rendering/rendering.c
+        src/rendering/rendering.h
 )
 
 target_link_libraries(game
-    yaml
-    custom_color
-    raylib
+        yaml
+        custom_color
+        raylib
 )
 
 target_compile_options(game PRIVATE -g -O0)
 
 add_custom_target(copy_resources ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/resources"
-    "${CMAKE_BINARY_DIR}/resources"
-    COMMENT "Copie des ressources vers le dossier de build"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/resources"
+        "${CMAKE_BINARY_DIR}/resources"
+        COMMENT "Copie des ressources vers le dossier de build"
 )
 
 add_dependencies(game copy_resources)

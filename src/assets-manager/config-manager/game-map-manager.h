@@ -119,7 +119,7 @@ typedef struct
  * @param parentDirPath chemin du dossier parent
  * @return la configuration de map ou NULL en cas d'échec
  */
-void* loadGameMapConfig(yaml_parser_t* parser, char* parentDirPath);
+void* loadGameMapConfig(yaml_parser_t* parser, const char* parentDirPath);
 
 /**
  * @brief Affiche la configuration de map

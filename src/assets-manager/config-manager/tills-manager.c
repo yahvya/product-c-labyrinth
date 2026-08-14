@@ -34,7 +34,7 @@ void* loadTillsConfig(yaml_parser_t* parser, const char* parentDirPath)
 
     if (config == NULL)
     {
-        fputs("\nEchec d'allocation de la configuration des tills\n", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'allocation de la configuration des tills\n");
         return NULL;
     }
 
@@ -45,7 +45,7 @@ void* loadTillsConfig(yaml_parser_t* parser, const char* parentDirPath)
 
     if (config->map == NULL)
     {
-        fputs("\nEchec d'allocation de la map des tills\n", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'allocation de la map des tills\n");
         free(config);
         return NULL;
     }
@@ -58,7 +58,7 @@ void* loadTillsConfig(yaml_parser_t* parser, const char* parentDirPath)
     {
         if (!yaml_parser_scan(parser, &readToken))
         {
-            fputs("\nEchec de lecture de token lors du parsing de configuration de tills\n", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de lecture de token lors du parsing de configuration de tills\n");
             FREE_RESOURCES_AND_QUIT
         }
 
@@ -85,7 +85,7 @@ void* loadTillsConfig(yaml_parser_t* parser, const char* parentDirPath)
 
                     if (tmpAddress == NULL)
                     {
-                        fputs("\nEchec de reallocation d'adresse lors du parsing de configuration de tills\n", stderr);
+                        TraceLog(LOG_ERROR, "\nEchec de reallocation d'adresse lors du parsing de configuration de tills\n");
                         FREE_RESOURCES_AND_QUIT
                     }
 

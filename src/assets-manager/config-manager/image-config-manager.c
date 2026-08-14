@@ -444,7 +444,7 @@ bool loadLinkedImages(ImageConfig* config)
 
         if (texture == NULL)
         {
-            fputs("\nEchec d'allocation de l'espace image raylib", stderr);
+            TraceLog(LOG_ERROR, "\nEchec d'allocation de l'espace image raylib");
             FREE_LOADING_RAYLIB_IMAGE_AND_QUIT
         }
 
@@ -452,7 +452,7 @@ bool loadLinkedImages(ImageConfig* config)
 
         if (!IsTextureReady(loadedTexture))
         {
-            fputs("\nEchec du chargement de l'image par raylib", stderr);
+            TraceLog(LOG_ERROR, "\nEchec du chargement de l'image par raylib");
             free(texture);
             FREE_LOADING_RAYLIB_IMAGE_AND_QUIT
         }
@@ -462,7 +462,7 @@ bool loadLinkedImages(ImageConfig* config)
         // enregistrement de l'image
         if (!listAppend(&config->linkedImages, texture))
         {
-            fputs("\nEchec d'enregistrement de l'image", stderr);
+            TraceLog(LOG_ERROR, "\nEchec d'enregistrement de l'image");
             UnloadTexture(loadedTexture);
             free(texture);
             FREE_LOADING_RAYLIB_IMAGE_AND_QUIT

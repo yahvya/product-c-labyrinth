@@ -75,7 +75,7 @@ static bool loadHeroActions(HeroConfig* heroConfig, char* configFilePath)
 
     if (!yaml_parser_initialize(&parser))
     {
-        fputs("Echec d'initialisation du parser pour le chargement des actions hero", stderr);
+        TraceLog(LOG_ERROR, "Echec d'initialisation du parser pour le chargement des actions hero");
         return false;
     }
 
@@ -101,7 +101,7 @@ static bool loadHeroActions(HeroConfig* heroConfig, char* configFilePath)
     {
         if (!yaml_parser_scan(&parser, &token))
         {
-            fputs("Echec de récupération du token lors du chargement des actions hero", stderr);
+            TraceLog(LOG_ERROR, "Echec de récupération du token lors du chargement des actions hero");
             return false;
         }
 
@@ -144,7 +144,7 @@ static bool loadHeroActions(HeroConfig* heroConfig, char* configFilePath)
 
                 if (createdImage.errorState)
                 {
-                    fputs("Echec de chargement d'une image lors du chargement des actions", stderr);
+                    TraceLog(LOG_ERROR, "Echec de chargement d'une image lors du chargement des actions");
                     stop = true;
                     break;
                 }
@@ -160,7 +160,7 @@ static bool loadHeroActions(HeroConfig* heroConfig, char* configFilePath)
 
                 if (heroConfig->actionsConfigs[actionKey].framesConfig == NULL)
                 {
-                    fputs("Echec d'allocation d'une image lors du chargement des actions", stderr);
+                    TraceLog(LOG_ERROR, "Echec d'allocation d'une image lors du chargement des actions");
                     stop = true;
                     break;
                 }
@@ -241,7 +241,7 @@ static bool consumeHeroIn(yaml_parser_t* parser, yaml_token_t* token, HeroesConf
 
                         if (!loadHeroActions(&hero, configFilePath))
                         {
-                            fputs("\nEchec du chargement des actions hero", stderr);
+                            TraceLog(LOG_ERROR, "\nEchec du chargement des actions hero");
                             FREE_CONSUME_AND_QUIT
                         }
                         break;
@@ -258,7 +258,7 @@ static bool consumeHeroIn(yaml_parser_t* parser, yaml_token_t* token, HeroesConf
 
                         if (tmpAddress == NULL)
                         {
-                            fputs("\nEchec de reallocation de la liste des heros", stderr);
+                            TraceLog(LOG_ERROR, "\nEchec de reallocation de la liste des heros");
                             FREE_CONSUME_AND_QUIT
                         }
 
@@ -280,7 +280,7 @@ static bool consumeHeroIn(yaml_parser_t* parser, yaml_token_t* token, HeroesConf
 
         if (!yaml_parser_scan(parser, token))
         {
-            fputs("\nEchec de récupération de token, lors de consumation d'un héro", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de récupération de token, lors de consumation d'un héro");
             return false;
         }
     }
@@ -297,7 +297,7 @@ void* loadHeroesConfig(yaml_parser_t* parser, const char* parentDirPath)
 
     if (config == NULL)
     {
-        fputs("\nEchec d'allocation de la configuration des heros", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'allocation de la configuration des heros");
         return NULL;
     }
 
@@ -308,7 +308,7 @@ void* loadHeroesConfig(yaml_parser_t* parser, const char* parentDirPath)
     if (config->map == NULL)
     {
         free(config);
-        fputs("\nEchec d'allocation de la map des heros", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'allocation de la map des heros");
         return NULL;
     }
 
@@ -319,7 +319,7 @@ void* loadHeroesConfig(yaml_parser_t* parser, const char* parentDirPath)
     {
         if (!yaml_parser_scan(parser, &token))
         {
-            fputs("\nEchec de lecture de token lors du parsing de configuration des héros\n", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de lecture de token lors du parsing de configuration des héros\n");
             FREE_RESOURCES_ANQ_QUIT
         }
 
@@ -334,7 +334,7 @@ void* loadHeroesConfig(yaml_parser_t* parser, const char* parentDirPath)
 
         if (token.type == YAML_KEY_TOKEN && !consumeHeroIn(parser, &token, config, parentDirPath))
         {
-            fputs("\nEchec de récupération de la configuration hero", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de récupération de la configuration hero");
             break;
         }
 

@@ -1,7 +1,10 @@
 #include "./generic-list.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "raylib.h"
 
 void newGenericListFrom(GenericList* list)
 {
@@ -29,7 +32,7 @@ bool listAppend(GenericList* listManager, void* data)
 
     if (newItemAddress == NULL)
     {
-        fputs("\nEchec d'allocation d'un élément de liste générique\n", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'allocation d'un élément de liste générique\n");
         listManager->errorState = true;
         return false;
     }
@@ -58,7 +61,7 @@ bool listPrepend(GenericList* listManager, void* data)
 
     if (newItemAddress == NULL)
     {
-        fputs("\nEchec d'allocation d'un élément de liste générique\n", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'allocation d'un élément de liste générique\n");
         listManager->errorState = true;
         return false;
     }

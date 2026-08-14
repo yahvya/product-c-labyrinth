@@ -11,7 +11,7 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    fputs("\nEchec de lancement du jeux", stderr);
+    TraceLog(LOG_ERROR, "\nEchec de lancement du jeux");
 
     return 1;
 }

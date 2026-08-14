@@ -22,8 +22,8 @@ bool drawTills(const GameConfig* gameConfig, const GameMapConfig* mapConfig);
 /**
  * Dessine les items de la map
  * @param gameConfig Configuration du jeux
- * @param itemsConfig Configuration des items
+ * @param mapConfig Configuration de la disposition actuelle de la map
  * @return Etat de succès des dessins
  */
-bool drawItems(const GameConfig* gameConfig, const ItemsConfig* itemsConfig);
+bool drawItems(const GameConfig* gameConfig, const GameMapConfig* mapConfig);
 #endif

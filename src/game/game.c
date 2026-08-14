@@ -37,10 +37,12 @@ bool initializeGame()
     SetWindowIcon(gameConfig->windowIcon);
     SetWindowSize(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT);
     SetWindowFocused();
-    // @todo Voir pour les FPS
+    SetTargetFPS(30);
     centerWindow();
 
     TraceLog(LOG_INFO, "Game initialized");
+
+    printItemsConfig(gameConfig->itemsConfig, NULL);
 
     return true;
 }
@@ -63,7 +65,7 @@ void startGame()
     {
         if (!renderWindow(&renderingConfig, gameRenderingConfig.currentRenderingFunction))
         {
-            fputs("Echec de rendu de fenêtre", stderr);
+            TraceLog(LOG_ERROR, "Echec de rendu de fenêtre");
             break;
         }
     }

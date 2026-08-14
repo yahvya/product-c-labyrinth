@@ -29,7 +29,7 @@ typedef struct
  * @param parentDirPath chemin du dossier de configuration parent
  * @return TillsConfig la structure des tuiles ou null en cas
  */
-void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath);
+void* loadItemsConfig(yaml_parser_t* parser, const char* parentDirPath);
 
 /**
  * @brief Affiche la configuration des items
@@ -44,4 +44,12 @@ void printItemsConfig(const ItemsConfig* config, char* toPrintBefore);
  * @param freeContainer si true libère aussi le conteneur
  */
 void freeItemsConfig(ItemsConfig* config, bool freeContainer);
+
+/**
+ * Fourni un item de la configuration à partir de son id
+ * @param id Identifiant de l'item
+ * @param itemsConfig Configuration des items
+ * @return La configuration d'image de l'item ou null si non trouvé
+ */
+ImageConfig* getItemImageConfigFromId(int id, const ItemsConfig* itemsConfig);
 #endif

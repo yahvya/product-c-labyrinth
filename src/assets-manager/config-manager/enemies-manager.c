@@ -66,7 +66,7 @@ static bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath)
 
     if (!yaml_parser_initialize(&parser))
     {
-        fputs("Echec d'initialisation du parser pour le chargement des actions ennemie", stderr);
+        TraceLog(LOG_ERROR, "Echec d'initialisation du parser pour le chargement des actions ennemie");
         return false;
     }
 
@@ -92,7 +92,7 @@ static bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath)
     {
         if (!yaml_parser_scan(&parser, &token))
         {
-            fputs("Echec de récupération du token lors du chargement des actions ennemie", stderr);
+            TraceLog(LOG_ERROR, "Echec de récupération du token lors du chargement des actions ennemie");
             return false;
         }
 
@@ -135,7 +135,7 @@ static bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath)
 
                 if (createdImage.errorState)
                 {
-                    fputs("Echec de chargement d'une image lors du chargement des actions", stderr);
+                    TraceLog(LOG_ERROR, "Echec de chargement d'une image lors du chargement des actions");
                     stop = true;
                     break;
                 }
@@ -150,7 +150,7 @@ static bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath)
 
                 if (enemyConfig->actionsMap[actionKey].framesConfig == NULL)
                 {
-                    fputs("Echec d'allocation d'une image lors du chargement des actions", stderr);
+                    TraceLog(LOG_ERROR, "Echec d'allocation d'une image lors du chargement des actions");
                     stop = true;
                     break;
                 }
@@ -231,7 +231,7 @@ static bool consumeEnemyIn(yaml_parser_t* parser, yaml_token_t* token, EnemiesCo
 
                         if (!loadEnemyActions(&enemy, configFilePath))
                         {
-                            fputs("\nEchec du chargement des actions hero", stderr);
+                            TraceLog(LOG_ERROR, "\nEchec du chargement des actions hero");
                             FREE_CONSUME_AND_QUIT
                         }
                         break;
@@ -248,7 +248,7 @@ static bool consumeEnemyIn(yaml_parser_t* parser, yaml_token_t* token, EnemiesCo
 
                         if (tmpAddress == NULL)
                         {
-                            fputs("\nEchec de reallocation de la liste des heros", stderr);
+                            TraceLog(LOG_ERROR, "\nEchec de reallocation de la liste des heros");
                             FREE_CONSUME_AND_QUIT
                         }
 
@@ -270,7 +270,7 @@ static bool consumeEnemyIn(yaml_parser_t* parser, yaml_token_t* token, EnemiesCo
 
         if (!yaml_parser_scan(parser, token))
         {
-            fputs("\nEchec de récupération de token, lors de consumation d'un héro", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de récupération de token, lors de consumation d'un héro");
             return false;
         }
     }
@@ -287,7 +287,7 @@ void* loadEnemies(yaml_parser_t* parser, const char* parentDirPath)
 
     if (config == NULL)
     {
-        fputs("Echec de l'allocation de la configuration ennemie", stderr);
+        TraceLog(LOG_ERROR, "Echec de l'allocation de la configuration ennemie");
         return NULL;
     }
 
@@ -297,7 +297,7 @@ void* loadEnemies(yaml_parser_t* parser, const char* parentDirPath)
     if (config->map == NULL)
     {
         free(config);
-        fputs("Echec d'allocation le map des ennemies", stderr);
+        TraceLog(LOG_ERROR, "Echec d'allocation le map des ennemies");
         return NULL;
     }
 
@@ -308,7 +308,7 @@ void* loadEnemies(yaml_parser_t* parser, const char* parentDirPath)
     {
         if (!yaml_parser_scan(parser, &token))
         {
-            fputs("\nEchec de lecture de token lors du parsing de configuration des héros\n", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de lecture de token lors du parsing de configuration des héros\n");
             FREE_RESOURCES_ANQ_QUIT
         }
 
@@ -323,7 +323,7 @@ void* loadEnemies(yaml_parser_t* parser, const char* parentDirPath)
 
         if (token.type == YAML_KEY_TOKEN && !consumeEnemyIn(parser, &token, config, parentDirPath))
         {
-            fputs("\nEchec de récupération de la configuration ennemie", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de récupération de la configuration ennemie");
             break;
         }
 

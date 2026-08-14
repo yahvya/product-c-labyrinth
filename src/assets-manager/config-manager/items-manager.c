@@ -21,7 +21,7 @@
  */
 #define SPACE_BUFFER_SIZE 20
 
-void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath)
+void* loadItemsConfig(yaml_parser_t* parser, const char* parentDirPath)
 {
     assert(parser != NULL && "Le parser fourni pour la lecture de configuration des items est NULL");
     assert(parentDirPath != NULL && "Le chemin parent fourni pour la lecture de configuration des items est NULL");
@@ -34,7 +34,7 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath)
 
     if (config == NULL)
     {
-        fputs("\nEchec d'allocation de la configuration d'items", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'allocation de la configuration d'items");
         return NULL;
     }
 
@@ -44,7 +44,7 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath)
     if (config->map == NULL)
     {
         free(config);
-        fputs("\nEchec d'allocation le map de la configuration d'items", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'allocation le map de la configuration d'items");
         return NULL;
     }
 
@@ -58,7 +58,7 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath)
     {
         if (!yaml_parser_scan(parser, &token))
         {
-            fputs("\nEchec de lecture de token lors du parsing de configuration des items\n", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de lecture de token lors du parsing de configuration des items\n");
             FREE_RESOURCES_AND_QUIT
         }
 
@@ -90,7 +90,7 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath)
 
                     if (tmpAddress == NULL)
                     {
-                        fputs("\nEchec de reallocation d'adresse lors du parsing de configuration d'items\n", stderr);
+                        TraceLog(LOG_ERROR, "\nEchec de reallocation d'adresse lors du parsing de configuration d'items\n");
                         FREE_RESOURCES_AND_QUIT
                     }
 
@@ -220,4 +220,14 @@ void freeItemsConfig(ItemsConfig* config, bool freeContainer)
 
     if (freeContainer)
         free(config);
+}
+
+ImageConfig* getItemImageConfigFromId(int id, const ItemsConfig* itemsConfig)
+{
+    if (id > itemsConfig->countOfItems)
+    {
+        return NULL;
+    }
+
+    return itemsConfig->map + (id - 1);
 }

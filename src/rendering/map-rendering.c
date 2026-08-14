@@ -1,9 +1,42 @@
 #include "map-rendering.h"
+#include "./rendering.h"
 #include "../assets-manager/config-manager/items-manager.h"
 #include "../assets-manager/config-manager/tills-manager.h"
 
-bool drawItems(const GameConfig* gameConfig, const ItemsConfig* itemsConfig)
+bool drawItems(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
 {
+    const GenericList itemsConfiguration = mapConfig->itemsConfig;
+
+    if (itemsConfiguration.errorState)
+    {
+        TraceLog(LOG_ERROR, "Erreur lors du chargement des items, la liste a un statut d'erreur à true");
+        return false;
+    }
+
+    const GenericListItem* currentNode = itemsConfiguration.items;
+
+    while (currentNode != NULL)
+    {
+        const GameMapItemConfig* itemConfig      = (GameMapItemConfig*)currentNode->data;
+        ImageConfig*             itemConfigImage = getItemImageConfigFromId(itemConfig->id, gameConfig->itemsConfig);
+
+        if (itemConfigImage == NULL)
+        {
+            TraceLog(LOG_ERROR, "Item non trouvé id : %d", itemConfig->id);
+            currentNode = currentNode->nextItem;
+            continue;
+        }
+
+        const Vector2 tillPosition = {
+            .x = (float)itemConfig->x,
+            .y = (float)itemConfig->y
+        };
+
+        renderImageFromConfig(itemConfigImage, mapConfig, tillPosition);
+
+        currentNode = currentNode->nextItem;
+    }
+
     return true;
 }
 
@@ -26,33 +59,12 @@ bool drawTills(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
                 continue;
             }
 
-            // rotation des images pour avoir l'animation visuelle
-            const GenericListItem* currentItem = tillConfig->linkedImages.items;
-
-            if (currentItem == NULL)
-            {
-                currentItem = tillConfig->linkedImages.items = tillConfig->linkedImages.listStart;
-            }
-
-            if (currentItem == NULL || currentItem->data == NULL)
-            {
-                TraceLog(LOG_ERROR, "Texture non chargée");
-                continue;
-            }
-
-            // dessin
-            const Texture2D* texture      = (Texture2D*)currentItem->data;
-            const Vector2    tillPosition = {
+            const Vector2 tillPosition = {
                 .x = (float)tillConfiguration.x,
                 .y = (float)tillConfiguration.y
             };
 
-            DrawTextureEx(*texture, tillPosition, (float)tillConfig->rotation, (float)mapConfig->scale, WHITE);
-
-            // avance du curseur vers la prochaine frame d'animation, bouclage en fin de liste
-            tillConfig->linkedImages.items = currentItem->nextItem != NULL
-                                                 ? currentItem->nextItem
-                                                 : tillConfig->linkedImages.listStart;
+            renderImageFromConfig(tillConfig, mapConfig, tillPosition);
         }
     }
 
@@ -62,5 +74,5 @@ bool drawTills(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
 bool renderMapFromConfig(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
 {
     return drawTills(gameConfig, mapConfig) &&
-        drawItems(gameConfig, gameConfig->itemsConfig);
+        drawItems(gameConfig, mapConfig);
 }

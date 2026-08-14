@@ -50,7 +50,7 @@ typedef struct
  * @param treatmentFunction fonction de traitement renvoyant la structure générée ou null en cas d'échec. Prend en argument le parser initialisé (ne doit pas libérer la ressource), le chemin du fichier de configuration parent
  * @return void* La structure chargée ou null en cas d'échec
  */
-void* loadConfig(char* path, void* (*treatmentFunction)(yaml_parser_t*, char*));
+void* loadConfig(char* path, void* (*treatmentFunction)(yaml_parser_t*, const char*));
 
 /**
  * @brief Charge la configuration du jeux

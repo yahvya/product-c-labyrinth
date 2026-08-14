@@ -24,7 +24,7 @@ static bool consumeScale(GameMapConfig* config, yaml_parser_t* parser)
     {
         if (!yaml_parser_scan(parser, &token))
         {
-            fputs("\nEchec de récupération du token lors de la consumation de l'échelle", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de récupération du token lors de la consumation de l'échelle");
             break;
         }
 
@@ -66,7 +66,7 @@ static bool consumeTills(GameMapConfig* config, yaml_parser_t* parser)
 
     if (config->tillsMapConfig.tillsMap == NULL)
     {
-        fputs("\nEchec d'allocation de la map des tills sur la configuration de jeux", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'allocation de la map des tills sur la configuration de jeux");
         return false;
     }
 
@@ -86,7 +86,7 @@ static bool consumeTills(GameMapConfig* config, yaml_parser_t* parser)
     {
         if (!yaml_parser_scan(parser, &token))
         {
-            fputs("\nEchec de lecture du token sur la configuration de jeux lors de la récupération des tills", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de lecture du token sur la configuration de jeux lors de la récupération des tills");
             break;
         }
 
@@ -142,7 +142,7 @@ static bool consumeTills(GameMapConfig* config, yaml_parser_t* parser)
 
                         if (tmpAddress == NULL)
                         {
-                            fputs("\nEchec de reallocation de colonne", stderr);
+                            TraceLog(LOG_ERROR, "\nEchec de reallocation de colonne");
                             yaml_token_delete(&token);
                             return false;
                         }
@@ -236,7 +236,7 @@ static bool consumeItems(GameMapConfig* config, yaml_parser_t* parser)
     {
         if (!yaml_parser_scan(parser, &token))
         {
-            fputs("\nEchec de recupération du token lors de la consumation des items", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de recupération du token lors de la consumation des items");
             free(newItemAddress);
             return false;
         }
@@ -270,7 +270,7 @@ static bool consumeItems(GameMapConfig* config, yaml_parser_t* parser)
 
                     if (!listAppend(&config->itemsConfig, newItemAddress))
                     {
-                        fputs("\nEchec d'allocation de la configuration d'item", stderr);
+                        TraceLog(LOG_ERROR, "\nEchec d'allocation de la configuration d'item");
                         yaml_token_delete(&token);
                         free(newItemAddress);
                         return false;
@@ -291,7 +291,7 @@ static bool consumeItems(GameMapConfig* config, yaml_parser_t* parser)
 
                     if (newItemAddress == NULL)
                     {
-                        fputs("\nEchec d'allocation de la configuration d'item", stderr);
+                        TraceLog(LOG_ERROR, "\nEchec d'allocation de la configuration d'item");
                         yaml_token_delete(&token);
                         return false;
                     }
@@ -349,7 +349,7 @@ static bool consumeEnemies(GameMapConfig* config, yaml_parser_t* parser)
     {
         if (!yaml_parser_scan(parser, &token))
         {
-            fputs("\nEchec de recupération du token lors de la consumation des ennemies", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de recupération du token lors de la consumation des ennemies");
             free(newEnemyAddress);
             return false;
         }
@@ -383,7 +383,7 @@ static bool consumeEnemies(GameMapConfig* config, yaml_parser_t* parser)
 
                     if (!listAppend(&config->enemiesConfig, newEnemyAddress))
                     {
-                        fputs("\nEchec d'allocation de la configuration d'ennemie", stderr);
+                        TraceLog(LOG_ERROR, "\nEchec d'allocation de la configuration d'ennemie");
                         yaml_token_delete(&token);
                         free(newEnemyAddress);
                         return false;
@@ -404,7 +404,7 @@ static bool consumeEnemies(GameMapConfig* config, yaml_parser_t* parser)
 
                     if (newEnemyAddress == NULL)
                     {
-                        fputs("\nEchec d'allocation de la configuration d'ennemie", stderr);
+                        TraceLog(LOG_ERROR, "\nEchec d'allocation de la configuration d'ennemie");
                         yaml_token_delete(&token);
                         return false;
                     }
@@ -442,14 +442,14 @@ static bool consumeEnemies(GameMapConfig* config, yaml_parser_t* parser)
     return true;
 }
 
-void* loadGameMapConfig(yaml_parser_t* parser, char* parentDirPath)
+void* loadGameMapConfig(yaml_parser_t* parser, const char* parentDirPath)
 {
     // allocation de la map
     GameMapConfig* config = malloc(sizeof(GameMapConfig));
 
     if (config == NULL)
     {
-        fputs("\nEchec d'allocation de la map de jeux", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'allocation de la map de jeux");
         return NULL;
     }
 
@@ -467,7 +467,7 @@ void* loadGameMapConfig(yaml_parser_t* parser, char* parentDirPath)
     {
         if (!yaml_parser_scan(parser, &token))
         {
-            fputs("\nEchec de lecture du token lors de la lecture de configuration de map", stderr);
+            TraceLog(LOG_ERROR, "\nEchec de lecture du token lors de la lecture de configuration de map");
             freeGameMapConfig(config, true);
             return NULL;
         }
@@ -493,7 +493,7 @@ void* loadGameMapConfig(yaml_parser_t* parser, char* parentDirPath)
                     case 4:
                         if (!consumeScale(config, parser))
                         {
-                            fputs("\nEchec de lecture de l'échelle", stderr);
+                            TraceLog(LOG_ERROR, "\nEchec de lecture de l'échelle");
                             FREE_AND_QUIT
                         }
                         break;
@@ -501,7 +501,7 @@ void* loadGameMapConfig(yaml_parser_t* parser, char* parentDirPath)
                     case 3:
                         if (!consumeTills(config, parser))
                         {
-                            fputs("\nEchec de lecture des tills", stderr);
+                            TraceLog(LOG_ERROR, "\nEchec de lecture des tills");
                             FREE_AND_QUIT
                         }
                         break;
@@ -509,7 +509,7 @@ void* loadGameMapConfig(yaml_parser_t* parser, char* parentDirPath)
                     case 2:
                         if (!consumeItems(config, parser))
                         {
-                            fputs("\nEchec de lecture des items", stderr);
+                            TraceLog(LOG_ERROR, "\nEchec de lecture des items");
                             FREE_AND_QUIT
                         }
                         break;
@@ -517,7 +517,7 @@ void* loadGameMapConfig(yaml_parser_t* parser, char* parentDirPath)
                     case 1:
                         if (!consumeEnemies(config, parser))
                         {
-                            fputs("\nEchec de lecture des noms", stderr);
+                            TraceLog(LOG_ERROR, "\nEchec de lecture des noms");
                             FREE_AND_QUIT
                         }
                         break;

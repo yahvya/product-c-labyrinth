@@ -1,18 +1,18 @@
 #include "./config-manager.h"
-#include "../assets/assets.h"
 #include <assert.h>
 #include <stdio.h>
+#include "../assets/assets.h"
 
 /**
  * @brief Vérifie si la valeur fournie est NULL et libère les ressources au cas où
  */
 #define CHECK_NULL_AND_QUIT(on,errorMessage)if(on == NULL){ \
     freeGameConfig(config,true);\
-    fputs("\n"errorMessage,stderr);\
+    TraceLog(LOG_ERROR, "\n"errorMessage);\
     return NULL;\
 }
 
-void* loadConfig(char* path, void* (*treatmentFunction)(yaml_parser_t*, char*))
+void* loadConfig(char* path, void* (*treatmentFunction)(yaml_parser_t*, const char*))
 {
     assert(path != NULL && "Le chemin fourni pour le document à charger est NULL");
 
@@ -30,7 +30,7 @@ void* loadConfig(char* path, void* (*treatmentFunction)(yaml_parser_t*, char*))
 
     if (!yaml_parser_initialize(&parser))
     {
-        fputs("\nEchec d'initialisation du parser yaml\n", stderr);
+        TraceLog(LOG_ERROR, "\nEchec d'initialisation du parser yaml\n");
         fclose(configFile);
         return NULL;
     }
@@ -59,7 +59,7 @@ GameConfig* loadGameConfig()
 
     if (config == NULL)
     {
-        fputs("Echec d'allocation de la configuration de jeux", stderr);
+        TraceLog(LOG_ERROR, "Echec d'allocation de la configuration de jeux");
         return NULL;
     }
 
