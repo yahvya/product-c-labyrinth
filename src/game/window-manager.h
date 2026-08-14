@@ -6,11 +6,31 @@
 /**
  * @brief Largeur par défaut de la fenêtre
  */
-#define WINDOW_DEFAULT_WIDTH 500
+#define WINDOW_DEFAULT_WIDTH 0
 /**
  * @brief Hauteur par défaut de la fenêtre
  */
-#define WINDOW_DEFAULT_HEIGHT 300
+#define WINDOW_DEFAULT_HEIGHT 0
+
+/**
+ * @brief Largeur de la fenêtre d'accueil
+ */
+#define WINDOW_HOME_WIDTH 800
+
+/**
+ * @brief Hauteur de la fenêtre d'accueil
+ */
+#define WINDOW_HOME_HEIGHT 600
+
+/**
+ * @brief Largeur de la fenêtre de jeu
+ */
+#define WINDOW_LEVELS_WIDTH 800
+
+/**
+ * Hauteur de la fenêtre de jeu
+ */
+#define WINDOW_LEVELS_HEIGHT 600
 
 /**
  * @brief Configuration de rendu

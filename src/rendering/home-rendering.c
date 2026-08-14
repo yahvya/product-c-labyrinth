@@ -4,6 +4,14 @@
 
 bool renderGameHome(RenderingConfig* renderingConfig)
 {
+    static bool resetWindowSize = true;
+
+    if (resetWindowSize)
+    {
+        SetWindowSize();
+        centerWindow();
+    }
+
     const GameRenderingConfig* gameRenderingConfig = (GameRenderingConfig*)renderingConfig->data;
     const GameConfig*          gameConfig          = gameRenderingConfig->gameConfig;
 
