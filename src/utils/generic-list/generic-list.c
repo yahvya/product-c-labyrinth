@@ -1,7 +1,7 @@
 #include "./generic-list.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 void newGenericListFrom(GenericList* list)
 {
@@ -83,7 +83,7 @@ bool listPrepend(GenericList* listManager, void* data)
  * @param freeContainedData si true libère la donnée contenue
  * @
  */
-void internalFree(GenericListItem* item, bool freeContainedData)
+static void internalFree(GenericListItem* item, const bool freeContainedData)
 {
     if (item == NULL)
         return;
@@ -97,7 +97,7 @@ void internalFree(GenericListItem* item, bool freeContainedData)
     free(item);
 }
 
-void freeGenericList(GenericList* list, bool freeContainedData)
+void freeGenericList(GenericList* list, const bool freeContainedData)
 {
     internalFree(list->items, freeContainedData);
     newGenericListFrom(list);

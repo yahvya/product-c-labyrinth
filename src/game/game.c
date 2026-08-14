@@ -1,7 +1,7 @@
 #include "./game.h"
-#include "../rendering/home-rendering.h"
 #include <stddef.h>
 #include "raylib.h"
+#include "../rendering/home-rendering.h"
 
 /**
  * @brief Chargement d'image ou libération des ressources du jeux

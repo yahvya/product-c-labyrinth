@@ -1,9 +1,9 @@
 #include "./tills-manager.h"
-#include <stdio.h>
 #include <assert.h>
-#include "../../game/game.h"
+#include <stdio.h>
 #include <string.h>
 #include "custom-color.h"
+#include "../../game/game.h"
 #include "../assets/assets.h"
 
 /**
@@ -23,13 +23,11 @@
     yaml_token_delete(&readToken);\
     return NULL;
 
-void* loadTillsConfig(yaml_parser_t* parser, char* parentDirPath)
+void* loadTillsConfig(yaml_parser_t* parser, const char* parentDirPath)
 {
     assert(parser != NULL && "Le parser fourni pour la lecture de configuration des tills est NULL");
     assert(parentDirPath != NULL && "Le chemin parent fourni pour la lecture de configuration des tills est NULL");
-    assert(
-        strlen(parentDirPath) < SUPPOSED_PATH_MAX_LEN &&
-        "La longueur du chemin fourni est supérieur à celle supposée sur le chargement des items");
+    assert(strlen(parentDirPath) < SUPPOSED_PATH_MAX_LEN && "La longueur du chemin fourni est supérieur à celle supposée sur le chargement des items");
 
     // allocation de base de la configuration
     TillsConfig* config = malloc(sizeof(TillsConfig));
@@ -122,7 +120,7 @@ void* loadTillsConfig(yaml_parser_t* parser, char* parentDirPath)
     return config;
 }
 
-void freeTillsConfig(TillsConfig* config, bool freeContainer)
+void freeTillsConfig(TillsConfig* config, const bool freeContainer)
 {
     assert(config != NULL && "Configuration d'image NULL pour la libération");
 
@@ -135,7 +133,7 @@ void freeTillsConfig(TillsConfig* config, bool freeContainer)
         free(config);
 }
 
-void printTillsConfig(TillsConfig* config, char* toPrintBefore)
+void printTillsConfig(const TillsConfig* config, char* toPrintBefore)
 {
     if (GAME_IS_IN_TEST_MODE != 1)
     {
@@ -146,12 +144,11 @@ void printTillsConfig(TillsConfig* config, char* toPrintBefore)
 
     printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);
     printf(CC_BBLUE"\n%sConfiguration de tills\n"CC_RESET,TO_PRINT);
-    printf(CC_BG_BLUE"\n%sNombre d'elements : %d\n",TO_PRINT, config->countOfTills);
+    printf(CC_BG_BLUE"\n%sNombre d'éléments : %d\n",TO_PRINT, config->countOfTills);
     printf("\n%sListe des elements\n"CC_RESET,TO_PRINT);
     printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
 
-    char spaceBuffer[SPACE_BUFFER_SIZE];
-    memset(spaceBuffer, 0, sizeof(char) * SPACE_BUFFER_SIZE);
+    char spaceBuffer[SPACE_BUFFER_SIZE] = {0};
 
     if (toPrintBefore != NULL)
         strcpy(spaceBuffer, toPrintBefore);
@@ -171,7 +168,7 @@ void printTillsConfig(TillsConfig* config, char* toPrintBefore)
     printf(CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
 }
 
-ImageConfig* getTillImageConfigFromId(int tillId, TillsConfig* tillsConfig)
+ImageConfig* getTillImageConfigFromId(const int tillId, const TillsConfig* tillsConfig)
 {
     ImageConfig* tillConfig = tillsConfig->map + (tillId - 1);
 

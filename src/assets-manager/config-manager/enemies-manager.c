@@ -1,9 +1,9 @@
 #include "./enemies-manager.h"
-#include "../assets/assets.h"
-#include <string.h>
 #include <assert.h>
+#include <string.h>
 #include "custom-color.h"
 #include "../../game/game.h"
+#include "../assets/assets.h"
 
 /**
  * @brief Ternaire de choix de l'affichage
@@ -29,7 +29,7 @@
     yaml_token_delete(token);\
     return NULL;
 
-EnemyAction getEnemyActionIndexFromName(char* name)
+EnemyAction getEnemyActionIndexFromName(const char* name)
 {
     static char enemyActionsMap[ENEMY_MAX_FOR_ARRAY_KEYS][SUPPOSED_ENEMY_ACTION_MAX_LEN] = {
         "front-walk",
@@ -53,7 +53,7 @@ EnemyAction getEnemyActionIndexFromName(char* name)
  * @param configFilePath chemin de configuration des actions
  * @return si le chargement réussi
  */
-bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath)
+static bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath)
 {
     assert(enemyConfig != NULL && "La configuration ennemie fournie pour le chargement des actions est NULL");
     assert(configFilePath != NULL && "Le chemin fournie pour le chargement des actions est NULL");
@@ -178,7 +178,7 @@ bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath)
  * @param parentDirPath chemin du dossier parent
  * @return si la création réussi
  */
-bool consumeEnemyIn(yaml_parser_t* parser, yaml_token_t* token, EnemiesConfig* config, char* parentDirPath)
+static bool consumeEnemyIn(yaml_parser_t* parser, yaml_token_t* token, EnemiesConfig* config, const char* parentDirPath)
 {
     assert(parser != NULL && "Le parser fourni pour la consumation des données ennemie est NULL");
     assert(token != NULL && "Le token fourni pour la consumation des données ennemie est NULL");
@@ -260,7 +260,7 @@ bool consumeEnemyIn(yaml_parser_t* parser, yaml_token_t* token, EnemiesConfig* c
                         return true;
 
                     default: ;
-                };
+                }
                 break;
 
             default: ;
@@ -277,7 +277,7 @@ bool consumeEnemyIn(yaml_parser_t* parser, yaml_token_t* token, EnemiesConfig* c
     while (true);
 }
 
-void* loadEnemies(yaml_parser_t* parser, char* parentDirPath)
+void* loadEnemies(yaml_parser_t* parser, const char* parentDirPath)
 {
     assert(parser != NULL && "Le parseur fourni est null pour la configuration des ennemies");
     assert(parentDirPath != NULL && "Le chemin fourni est null pour la configuration des ennemies");
@@ -333,7 +333,7 @@ void* loadEnemies(yaml_parser_t* parser, char* parentDirPath)
     return config;
 }
 
-void freeEnemyConfig(EnemyConfig* config, bool freeContainer)
+void freeEnemyConfig(EnemyConfig* config, const bool freeContainer)
 {
     assert(config != NULL && "L'ennemie fourni à la libération est NULL");
 
@@ -347,7 +347,7 @@ void freeEnemyConfig(EnemyConfig* config, bool freeContainer)
         free(config);
 }
 
-void freeEnemiesConfig(EnemiesConfig* config, bool freeContainer)
+void freeEnemiesConfig(EnemiesConfig* config, const bool freeContainer)
 {
     assert(config != NULL && "La configuration d'ennemies fournie est NULL");
 
@@ -360,7 +360,7 @@ void freeEnemiesConfig(EnemiesConfig* config, bool freeContainer)
         free(config);
 }
 
-void printEnemiesConfig(EnemiesConfig* enemiesConfig, char* toPrintBefore)
+void printEnemiesConfig(const EnemiesConfig* enemiesConfig, char* toPrintBefore)
 {
     if (GAME_IS_IN_TEST_MODE != 1)
     {

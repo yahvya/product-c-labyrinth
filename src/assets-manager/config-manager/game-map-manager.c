@@ -11,12 +11,12 @@
     return NULL;
 
 /**
- * @brief Consume l'echelle
+ * @brief Consume l'échelle
  * @param config la configuration
  * @param parser le parser
  * @return si la consumation réussie
  */
-bool consumeScale(GameMapConfig* config, yaml_parser_t* parser)
+static bool consumeScale(GameMapConfig* config, yaml_parser_t* parser)
 {
     yaml_token_t token;
 
@@ -24,7 +24,7 @@ bool consumeScale(GameMapConfig* config, yaml_parser_t* parser)
     {
         if (!yaml_parser_scan(parser, &token))
         {
-            fputs("\nEchec de récupération du token lors de la consumation de l'echelle", stderr);
+            fputs("\nEchec de récupération du token lors de la consumation de l'échelle", stderr);
             break;
         }
 
@@ -59,7 +59,7 @@ bool consumeScale(GameMapConfig* config, yaml_parser_t* parser)
  * @param parser le parser
  * @return si la consumation réussie
  */
-bool consumeTills(GameMapConfig* config, yaml_parser_t* parser)
+static bool consumeTills(GameMapConfig* config, yaml_parser_t* parser)
 {
     // allocation de base
     config->tillsMapConfig.tillsMap = malloc(sizeof(GameMapTillConfig*));
@@ -222,7 +222,7 @@ bool consumeTills(GameMapConfig* config, yaml_parser_t* parser)
  * @param parser le parser
  * @return si la consumation réussie
  */
-bool consumeItems(GameMapConfig* config, yaml_parser_t* parser)
+static bool consumeItems(GameMapConfig* config, yaml_parser_t* parser)
 {
     yaml_token_t token;
 
@@ -335,7 +335,7 @@ bool consumeItems(GameMapConfig* config, yaml_parser_t* parser)
  * @param parser le parser
  * @return si la consumation réussie
  */
-bool consumeEnemies(GameMapConfig* config, yaml_parser_t* parser)
+static bool consumeEnemies(GameMapConfig* config, yaml_parser_t* parser)
 {
     yaml_token_t token;
 
@@ -493,7 +493,7 @@ void* loadGameMapConfig(yaml_parser_t* parser, char* parentDirPath)
                     case 4:
                         if (!consumeScale(config, parser))
                         {
-                            fputs("\nEchec de lecture de l'echelle", stderr);
+                            fputs("\nEchec de lecture de l'échelle", stderr);
                             FREE_AND_QUIT
                         }
                         break;

@@ -1,7 +1,7 @@
 #if !defined(GAME_MAP_RENDERING_H)
 #define GAME_MAP_RENDERING_H
-#include "../assets-manager/config-manager/game-map-manager.h"
 #include "../assets-manager/config-manager/config-manager.h"
+#include "../assets-manager/config-manager/game-map-manager.h"
 
 /**
  * @brief Affiche une map avec ses éléments
@@ -15,7 +15,15 @@ bool renderMapFromConfig(const GameConfig* gameConfig, const GameMapConfig* mapC
  * @brief Dessine les tills de la map
  * @param gameConfig Configuration du jeux
  * @param mapConfig Configuration de la disposition actuelle de la map
- * @return Etat de succès du dessin
+ * @return Etat de succès des dessins
  */
 bool drawTills(const GameConfig* gameConfig, const GameMapConfig* mapConfig);
+
+/**
+ * Dessine les items de la map
+ * @param gameConfig Configuration du jeux
+ * @param itemsConfig Configuration des items
+ * @return Etat de succès des dessins
+ */
+bool drawItems(const GameConfig* gameConfig, const ItemsConfig* itemsConfig);
 #endif

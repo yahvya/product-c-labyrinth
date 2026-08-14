@@ -1,8 +1,8 @@
 #include "./items-manager.h"
-#include "../assets/assets.h"
 #include <assert.h>
 #include "custom-color.h"
 #include "../../game/game.h"
+#include "../assets/assets.h"
 
 /**
  * @brief Macro de libération des ressources de parsing
@@ -107,8 +107,8 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath)
                     // récupération du chemin d'élément suivant
                     keyGetCount = 0;
 
-                    char configFilePath[SUPPOSED_PATH_MAX_LEN];
-                    memset(configFilePath, 0, SUPPOSED_PATH_MAX_LEN);
+                    char configFilePath[SUPPOSED_PATH_MAX_LEN] = {0};
+
                     strncpy(configFilePath, parentDirPath, sizeof(char) * (SUPPOSED_PATH_MAX_LEN - 1));
                     strncat(
                         configFilePath,
@@ -174,7 +174,7 @@ void* loadItemsConfig(yaml_parser_t* parser, char* parentDirPath)
     return config;
 }
 
-void printItemsConfig(ItemsConfig* config, char* toPrintBefore)
+void printItemsConfig(const ItemsConfig* config, char* toPrintBefore)
 {
     if (GAME_IS_IN_TEST_MODE != 1)
     {
@@ -185,12 +185,11 @@ void printItemsConfig(ItemsConfig* config, char* toPrintBefore)
 
     printf("\n"CC_BLUE"%s------------------------------------------------------------------------"CC_RESET,TO_PRINT);
     printf("\n"CC_BBLUE"%sConfiguration des items"CC_RESET"\n",TO_PRINT);
-    printf("\n"CC_BG_BLUE"%sNombre d'elements : %d"CC_RESET"\n",TO_PRINT, config->countOfItems);
+    printf("\n"CC_BG_BLUE"%sNombre d'éléments : %d"CC_RESET"\n",TO_PRINT, config->countOfItems);
     printf("\n"CC_BG_BLUE"%sListe des elements"CC_RESET"\n",TO_PRINT);
     printf(CC_BLUE"%s------------------------------------------------------------------------"CC_RESET"\n",TO_PRINT);
 
-    char spaceBuffer[SPACE_BUFFER_SIZE];
-    memset(spaceBuffer, 0, sizeof(char) * SPACE_BUFFER_SIZE);
+    char spaceBuffer[SPACE_BUFFER_SIZE] = {0};
 
     if (toPrintBefore != NULL)
         strcpy(spaceBuffer, toPrintBefore);

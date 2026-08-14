@@ -38,8 +38,7 @@ void* loadConfig(char* path, void* (*treatmentFunction)(yaml_parser_t*, char*))
     yaml_parser_set_input_file(&parser, configFile);
 
     // parsing
-    char dirPath[SUPPOSED_PATH_MAX_LEN];
-    memset(dirPath, 0, sizeof(char) * SUPPOSED_PATH_MAX_LEN);
+    char dirPath[SUPPOSED_PATH_MAX_LEN] = {0};
     extractDirPathFrom(path, dirPath, sizeof(char) * SUPPOSED_PATH_MAX_LEN);
 
     void* treatmentResult = treatmentFunction(&parser, dirPath);
@@ -101,7 +100,7 @@ GameConfig* loadGameConfig()
 
     if (!IsImageReady(config->windowIcon))
     {
-        CHECK_NULL_AND_QUIT(NULL, "Echec de chargement de l'icone de la fenêtre")
+        CHECK_NULL_AND_QUIT(NULL, "Echec de chargement de l'icône de la fenêtre")
     }
 
     TraceLog(LOG_DEBUG, "Window icon loaded");
@@ -110,7 +109,7 @@ GameConfig* loadGameConfig()
     return config;
 }
 
-bool loadItemsImages(GameConfig* gameConfig)
+bool loadItemsImages(const GameConfig* gameConfig)
 {
     assert(gameConfig != NULL && gameConfig->itemsConfig != NULL && "La configuration du jeux passée est NULL");
 
@@ -123,7 +122,7 @@ bool loadItemsImages(GameConfig* gameConfig)
     return true;
 }
 
-bool loadTillsImages(GameConfig* gameConfig)
+bool loadTillsImages(const GameConfig* gameConfig)
 {
     assert(gameConfig != NULL && gameConfig->tillsConfig != NULL && "La configuration du jeux passé est NULL");
 
@@ -136,7 +135,7 @@ bool loadTillsImages(GameConfig* gameConfig)
     return true;
 }
 
-bool loadEnemiesImages(GameConfig* gameConfig)
+bool loadEnemiesImages(const GameConfig* gameConfig)
 {
     assert(gameConfig != NULL && gameConfig->enemiesConfig != NULL && "La configuration de jeux fourni est NULL");
 
@@ -154,7 +153,7 @@ bool loadEnemiesImages(GameConfig* gameConfig)
     return true;
 }
 
-bool loadHeroesImages(GameConfig* gameConfig)
+bool loadHeroesImages(const GameConfig* gameConfig)
 {
     assert(gameConfig != NULL && gameConfig->heroesConfig != NULL && "La configuration de jeux fourni est NULL");
 
@@ -172,7 +171,7 @@ bool loadHeroesImages(GameConfig* gameConfig)
     return true;
 }
 
-void freeGameConfig(GameConfig* config, bool freeContainer)
+void freeGameConfig(const GameConfig* config, bool freeContainer)
 {
     TraceLog(LOG_DEBUG, "Starting to free game configuration");
 
@@ -197,7 +196,7 @@ void freeGameConfig(GameConfig* config, bool freeContainer)
         UnloadImage(config->windowIcon);
 
     if (freeContainer)
-        free(config);
+        free((void*)config);
 
     TraceLog(LOG_INFO, "Game configurations memory are free");
 }

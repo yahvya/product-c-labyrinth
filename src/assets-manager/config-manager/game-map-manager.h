@@ -4,133 +4,133 @@
 #include "../../utils/generic-list/generic-list.h"
 
 /**
-     * @brief Configuration d'une till
-     */
+ * @brief Configuration d'une till
+ */
 typedef struct
 {
     /**
-         * @brief Position x de la till
-         */
+     * @brief Position x de la till
+     */
     int x;
     /**
-         * @brief Position y de la
-         */
+     * @brief Position y de la
+     */
     int y;
     /**
-         * @brief Id de la till
-         */
+     * @brief Id de la till
+     */
     int id;
 } GameMapTillConfig;
 
 /**
-     * @brief Configuration d'une map de tills
-     */
+ * @brief Configuration d'une map de tills
+ */
 typedef struct
 {
     /**
-         * @brief Map des tills
-         */
+     * @brief Map des tills
+     */
     GameMapTillConfig** tillsMap;
 
     /**
-         * @brief Nombre de colonnes
-         */
+     * @brief Nombre de colonnes
+     */
     int countOfCols;
 
     /**
-         * @brief Nombre de lignes
-         */
+     * @brief Nombre de lignes
+     */
     int countOfRows;
 } GameTillsMap;
 
 /**
-     * @brief Configuration d'item d'une map
-     */
+ * @brief Configuration d'item d'une map
+ */
 typedef struct
 {
     /**
-         * @brief Position x de l'item
-         */
+     * @brief Position x de l'item
+     */
     int x;
 
     /**
-         * @brief Position y de l'item
-         */
+     * @brief Position y de l'item
+     */
     int y;
 
     /**
-         * @brief Id de l'item
-         */
+     * @brief Id de l'item
+     */
     int id;
 } GameMapItemConfig;
 
 /**
-     * @brief Configuration d'un ennemie d'une map
-     */
+ * @brief Configuration d'un ennemie d'une map
+ */
 typedef struct
 {
     /**
-         * @brief Position x de l'ennemie
-         */
+     * @brief Position x de l'ennemie
+     */
     int x;
 
     /**
-         * @brief Position y de l'ennemie
-         */
+     * @brief Position y de l'ennemie
+     */
     int y;
 
     /**
-         * @brief Id de l'ennemie
-         */
+     * @brief Id de l'ennemie
+     */
     int id;
 } GameMapEnemyConfig;
 
 /**
-     * @brief Configuration de map
-     */
+ * @brief Configuration de map
+ */
 typedef struct
 {
     /**
-         * @brief Echelle d'affichage des éléments
-         */
+     * @brief Echelle d'affichage des éléments
+     */
     int scale;
 
     /**
-         * @brief Configuration de la map des tills
-         */
+     * @brief Configuration de la map des tills
+     */
     GameTillsMap tillsMapConfig;
 
     /**
-         * @brief Configuration des items de la map
-         * GameMapItemConfig
-         */
+     * @brief Configuration des items de la map
+     * GameMapItemConfig
+     */
     GenericList itemsConfig;
 
     /**
-         * @brief Configuration des ennemies de la map
-         * GameMapEnemyConfig
-         */
+     * @brief Configuration des ennemies de la map
+     * GameMapEnemyConfig
+     */
     GenericList enemiesConfig;
 } GameMapConfig;
 
 /**
-     * @brief Charge une map de configuration
-     * @param parser parser
-     * @param parentDirPath chemin du dossier parent
-     * @return la configuration de map ou NULL en cas d'echec
-     */
+ * @brief Charge une map de configuration
+ * @param parser parser
+ * @param parentDirPath chemin du dossier parent
+ * @return la configuration de map ou NULL en cas d'échec
+ */
 void* loadGameMapConfig(yaml_parser_t* parser, char* parentDirPath);
 
 /**
-     * @brief Affiche la configuration de map
-     * @param config configuration de map
-     */
+ * @brief Affiche la configuration de map
+ * @param config configuration de map
+ */
 void printMapConfig(GameMapConfig* config);
 
 /**
-     * @brief Libère la map de jeux
-     * @param mapConfig configuration de map
-     * @param freeContainer si le conteneur doit être libéré
-     */
+ * @brief Libère la map de jeux
+ * @param mapConfig configuration de map
+ * @param freeContainer si le conteneur doit être libéré
+ */
 void freeGameMapConfig(GameMapConfig* mapConfig, bool freeContainer);
 #endif

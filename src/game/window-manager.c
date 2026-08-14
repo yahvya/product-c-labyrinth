@@ -1,11 +1,11 @@
 #include "./window-manager.h"
-#include "raylib.h"
 #include <assert.h>
 #include <stddef.h>
+#include "raylib.h"
 
 void centerWindow()
 {
-    int currentMonitorId = GetCurrentMonitor();
+    const int currentMonitorId = GetCurrentMonitor();
 
     SetWindowPosition(
         (GetMonitorWidth(currentMonitorId) - GetScreenWidth()) / 2,
@@ -20,7 +20,7 @@ bool renderWindow(RenderingConfig * renderingConfig, bool(*customRenderingFuncti
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    bool successState = customRenderingFunction(renderingConfig);
+    const bool successState = customRenderingFunction(renderingConfig);
     EndDrawing();
 
     return successState;

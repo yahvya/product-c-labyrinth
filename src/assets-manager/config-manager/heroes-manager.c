@@ -1,8 +1,8 @@
 #include "./heroes-manager.h"
-#include "../assets/assets.h"
 #include <assert.h>
 #include "custom-color.h"
 #include "../../game/game.h"
+#include "../assets/assets.h"
 
 /**
  * @brief Ternaire de choix de l'affichage
@@ -28,7 +28,7 @@
     yaml_token_delete(token);\
     return NULL;
 
-HeroAction getHeroActionIndexFromName(char* name)
+HeroAction getHeroActionIndexFromName(const char* name)
 {
     static char heroActionsMap[HERO_MAX_FOR_ARRAY_KEYS][SUPPOSED_HERO_ACTION_NAME_MAX_LEN] = {
         "back-animation",
@@ -62,7 +62,7 @@ HeroAction getHeroActionIndexFromName(char* name)
  * @param configFilePath chemin de configuration des actions
  * @return si le chargement réussi
  */
-bool loadHeroActions(HeroConfig* heroConfig, char* configFilePath)
+static bool loadHeroActions(HeroConfig* heroConfig, char* configFilePath)
 {
     assert(heroConfig != NULL && "La configuration hero fournie pour le chargement des actions est NULL");
     assert(configFilePath != NULL && "Le chemin fournie pour le chargement des actions est NULL");
@@ -188,7 +188,7 @@ bool loadHeroActions(HeroConfig* heroConfig, char* configFilePath)
  * @param parentDirPath chemin du dossier parent
  * @return si la création réussi
  */
-bool consumeHeroIn(yaml_parser_t* parser, yaml_token_t* token, HeroesConfig* config, char* parentDirPath)
+static bool consumeHeroIn(yaml_parser_t* parser, yaml_token_t* token, HeroesConfig* config, const char* parentDirPath)
 {
     assert(parser != NULL && "Le parser fourni pour la consumation des données hero est NULL");
     assert(token != NULL && "Le token fourni pour la consumation des données hero est NULL");
@@ -270,7 +270,7 @@ bool consumeHeroIn(yaml_parser_t* parser, yaml_token_t* token, HeroesConfig* con
                         return true;
 
                     default: ;
-                };
+                }
                 break;
 
             default: ;
@@ -287,7 +287,7 @@ bool consumeHeroIn(yaml_parser_t* parser, yaml_token_t* token, HeroesConfig* con
     while (true);
 }
 
-void* loadHeroesConfig(yaml_parser_t* parser, char* parentDirPath)
+void* loadHeroesConfig(yaml_parser_t* parser, const char* parentDirPath)
 {
     assert(parser != NULL && "Le parser fourni pour le chargement des heros est NULL");
     assert(parentDirPath != NULL && "Le chemin du dossier parent pour le chargement des héros est NULL");
@@ -344,7 +344,7 @@ void* loadHeroesConfig(yaml_parser_t* parser, char* parentDirPath)
     return config;
 }
 
-void freeHeroConfig(HeroConfig* config, bool freeContainer)
+void freeHeroConfig(HeroConfig* config, const bool freeContainer)
 {
     assert(config != NULL && "Le hero fourni à la libération est NULL");
 
@@ -358,7 +358,7 @@ void freeHeroConfig(HeroConfig* config, bool freeContainer)
         free(config);
 }
 
-void freeHeroesConfig(HeroesConfig* config, bool freeContainer)
+void freeHeroesConfig(HeroesConfig* config, const bool freeContainer)
 {
     assert(config != NULL && "La configuration de héros fournie est NULL");
 
@@ -371,7 +371,7 @@ void freeHeroesConfig(HeroesConfig* config, bool freeContainer)
         free(config);
 }
 
-void printHeroesConfig(HeroesConfig* heroesConfig, char* toPrintBefore)
+void printHeroesConfig(const HeroesConfig* heroesConfig, const char* toPrintBefore)
 {
     if (GAME_IS_IN_TEST_MODE != 1)
     {

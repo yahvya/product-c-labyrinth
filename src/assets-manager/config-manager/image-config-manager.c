@@ -1,6 +1,6 @@
 #include "./image-config-manager.h"
-#include <string.h>
 #include <assert.h>
+#include <string.h>
 #include "custom-color.h"
 #include "raylib.h"
 #include "../../game/game.h"
@@ -32,7 +32,7 @@ return false;
  *  * @param parentDirPath chemin du dossier parent de la configuration
  * @return si l'élément à bien été chargé
  */
-bool loadStaticPath(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirPath)
+static bool loadStaticPath(ImageConfig* inConfig, yaml_parser_t* parser, const char* parentDirPath)
 {
     LOAD_FUNCTIONS_GUARD
 
@@ -66,9 +66,9 @@ bool loadStaticPath(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDi
                     stop = true;
 
                     // ajout du chemin par copie du chemin parent + chemin image
-                    unsigned long long len  = strlen(parentDirPath);
-                    char*              path = calloc(
-                        (token.data.scalar.length / sizeof(char)) + (sizeof(char) * len) + 1,
+                    const unsigned long long len  = strlen(parentDirPath);
+                    char*                    path = calloc(
+                        token.data.scalar.length / sizeof(char) + sizeof(char) * len + 1,
                         sizeof(char)
                     );
 
@@ -83,8 +83,8 @@ bool loadStaticPath(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDi
                         yaml_token_delete(&token);
                         return true;
                     }
-                    else
-                        stop = true;
+
+                    stop = true;
                 }
                 break;
 
@@ -104,7 +104,7 @@ bool loadStaticPath(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDi
  *  * @param parentDirPath chemin du dossier parent de la configuration
  * @return si l'élément à bien été chargé
  */
-bool loadListPath(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirPath)
+static bool loadListPath(ImageConfig* inConfig, yaml_parser_t* parser, const char* parentDirPath)
 {
     LOAD_FUNCTIONS_GUARD
 
@@ -140,9 +140,9 @@ bool loadListPath(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirP
                     break;
 
                 // ajout du chemin par copie du chemin parent + chemin image
-                unsigned long long len  = strlen(parentDirPath);
-                char*              path = calloc(
-                    (token.data.scalar.length / sizeof(char)) + (sizeof(char) * len) + 1,
+                const unsigned long long len  = strlen(parentDirPath);
+                char*                    path = calloc(
+                    token.data.scalar.length / sizeof(char) + sizeof(char) * len + 1,
                     sizeof(char)
                 );
 
@@ -175,7 +175,7 @@ bool loadListPath(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirP
  *  * @param parentDirPath chemin du dossier parent de la configuration
  * @return si l'élément à bien été chargé
  */
-bool loadPath(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirPath)
+static bool loadPath(ImageConfig* inConfig, yaml_parser_t* parser, const char* parentDirPath)
 {
     LOAD_FUNCTIONS_GUARD
 
@@ -193,7 +193,7 @@ bool loadPath(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirPath)
  *  * @param parentDirPath chemin du dossier parent de la configuration
  * @return si l'élément à bien été chargé
  */
-bool loadDescription(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirPath)
+static bool loadDescription(ImageConfig* inConfig, yaml_parser_t* parser, const char* parentDirPath)
 {
     LOAD_FUNCTIONS_GUARD
 
@@ -245,7 +245,7 @@ bool loadDescription(ImageConfig* inConfig, yaml_parser_t* parser, char* parentD
  *  * @param parentDirPath chemin du dossier parent de la configuration
  * @return si l'élément à bien été chargé
  */
-bool loadType(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirPath)
+static bool loadType(ImageConfig* inConfig, yaml_parser_t* parser, const char* parentDirPath)
 {
     LOAD_FUNCTIONS_GUARD
 
@@ -296,7 +296,7 @@ bool loadType(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirPath)
  * @param parentDirPath chemin du dossier parent de la configuration
  * @return si l'élément à bien été chargé
  */
-bool loadRotation(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirPath)
+static bool loadRotation(ImageConfig* inConfig, yaml_parser_t* parser, const char* parentDirPath)
 {
     LOAD_FUNCTIONS_GUARD
 
@@ -340,7 +340,7 @@ bool loadRotation(ImageConfig* inConfig, yaml_parser_t* parser, char* parentDirP
     return false;
 }
 
-ImageConfig createImageFromConfig(yaml_parser_t* parser, char* parentDirPath)
+ImageConfig createImageFromConfig(yaml_parser_t* parser, const char* parentDirPath)
 {
     assert(parser != NULL && "Le parser fourni est NULL");
     assert(parentDirPath != NULL && "Le chemin parent fourni est NULL");
@@ -384,7 +384,7 @@ ImageConfig createImageFromConfig(yaml_parser_t* parser, char* parentDirPath)
                     nextIsKey = false;
 
                     // vérification de l'élément de comparaison à charger
-                    bool(*loadFunction)(ImageConfig *, yaml_parser_t *, char*) = NULL;
+                    bool (*loadFunction)(ImageConfig*, yaml_parser_t*, const char*) = NULL;
 
                     if (strcmp((char*)token.data.scalar.value, "path") == 0)
                         loadFunction = loadPath;
@@ -437,7 +437,7 @@ bool loadLinkedImages(ImageConfig* config)
     // chargement des images raylib
     while (config->paths.items != NULL)
     {
-        char* imagePath = (char*)config->paths.items->data;
+        const char* imagePath = config->paths.items->data;
 
         // création de l'image
         Texture2D* texture = malloc(sizeof(Texture2D));
@@ -477,7 +477,7 @@ bool loadLinkedImages(ImageConfig* config)
     return true;
 }
 
-void freeImageConfig(ImageConfig* config, bool freeContainer)
+void freeImageConfig(ImageConfig* config, const bool freeContainer)
 {
     assert(config != NULL && "Configuration d'image NULL pour la liberation");
 
@@ -488,10 +488,10 @@ void freeImageConfig(ImageConfig* config, bool freeContainer)
     {
         while (config->linkedImages.items != NULL)
         {
-            Texture2D* texture = (Texture2D*)config->linkedImages.items->data;
+            const Texture2D* texture = config->linkedImages.items->data;
 
-            if (IsTextureReady(*(texture)))
-                UnloadTexture(*(texture));
+            if (IsTextureReady(*texture))
+                UnloadTexture(*texture);
 
             config->linkedImages.items = config->linkedImages.items->nextItem;
         }

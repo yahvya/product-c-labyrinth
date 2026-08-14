@@ -4,23 +4,23 @@
 #include <yaml.h>
 
 /**
-     * @brief Longueur max supposée de l'id d'un héro
-     */
+ * @brief Longueur max supposée de l'id d'un héro
+ */
 #define SUPPOSED_HERO_ID_MAX_LEN 15
 
 /**
-     * @brief Longueur max supposée du nom d'un héro
-     */
+ * @brief Longueur max supposée du nom d'un héro
+ */
 #define SUPPOSED_HERO_NAME_MAX_LEN 20
 
 /**
-     * @brief Longueur max supposée du nom de l'action d'un héro
-     */
+ * @brief Longueur max supposée du nom de l'action d'un héro
+ */
 #define SUPPOSED_HERO_ACTION_NAME_MAX_LEN 40
 
 /**
-     * @brief Liste des actions hero
-     */
+ * @brief Liste des actions hero
+ */
 typedef enum
 {
     HERO_BACK_ANIMATION,
@@ -38,102 +38,102 @@ typedef enum
     HERO_LEFT_WALK_ANIMATION,
     HERO_BACK_WALK_ANIMATION,
     /**
-         * @brief Clé pour définir la taille max des valeurs d'actions
-         */
+     * @brief Clé pour définir la taille max des valeurs d'actions
+     */
     HERO_MAX_FOR_ARRAY_KEYS
 } HeroAction;
 
 /**
-     * @brief Configuration d'une action hero
-     */
+ * @brief Configuration d'une action hero
+ */
 typedef struct
 {
     /**
-         * @brief Nom de l'action
-         */
+     * @brief Nom de l'action
+     */
     char actionName[SUPPOSED_HERO_ACTION_NAME_MAX_LEN];
 
     /**
-         * @brief Liste des images composant l'action
-         */
+     * @brief Liste des images composant l'action
+     */
     ImageConfig* framesConfig;
 } HeroActionConfig;
 
 /**
-     * @brief Configuration d'un héro
-     */
+ * @brief Configuration d'un héro
+ */
 typedef struct
 {
     /**
-         * @brief Configuration des actions héro
-         */
+     * @brief Configuration des actions héro
+     */
     HeroActionConfig actionsConfigs[HERO_MAX_FOR_ARRAY_KEYS];
 
     /**
-         * @brief Nom du héro
-         */
+     * @brief Nom du héro
+     */
     char name[SUPPOSED_HERO_NAME_MAX_LEN];
 
     /**
-         * @brief Identifiant du héro
-         */
+     * @brief Identifiant du héro
+     */
     char id[SUPPOSED_HERO_ID_MAX_LEN];
 } HeroConfig;
 
 /**
-     * @brief Liste des héros
-     */
+ * @brief Liste des héros
+ */
 typedef HeroConfig* HeroesMap;
 
 /**
-     * @brief Configuration des héros
-     */
+ * @brief Configuration des héros
+ */
 typedef struct
 {
     /**
-         * Liste des héros. Tableau indicé par l'id converti en entier - 1. Il est conseillé d'utiliser les fonctions d'accès
-         */
+     * @brief Liste des héros. Tableau indicé par l'id converti en entier - 1. Il est conseillé d'utiliser les fonctions d'accès
+     */
     HeroesMap map;
 
     /**
-         * @brief Nombre de héros
-         */
+     * @brief Nombre de héros
+     */
     int countOfHeroes;
 } HeroesConfig;
 
 /**
-     * @brief Recherche l'indice tableau d'une action héro à partir du nom
-     * @param name nom de l'action
-     * @return l'indice ou -1 si non trouvé
-     */
-HeroAction getHeroActionIndexFromName(char* name);
+ * @brief Recherche l'indice tableau d'une action héro à partir du nom
+ * @param name nom de l'action
+ * @return l'indice ou -1 si non trouvé
+ */
+HeroAction getHeroActionIndexFromName(const char* name);
 
 /**
-     * @brief Charge la configuration
-     * @param parser parser
-     * @param parentDirPath chemin du dossier parent
-     * @return la configuration
-     */
-void* loadHeroesConfig(yaml_parser_t* parser, char* parentDirPath);
+ * @brief Charge la configuration
+ * @param parser parser
+ * @param parentDirPath chemin du dossier parent
+ * @return la configuration
+ */
+void* loadHeroesConfig(yaml_parser_t* parser, const char* parentDirPath);
 
 /**
-     * @brief libère la configuration d'un héro
-     * @param config configuration
-     * @param freeContainer si true libère la config fournie
-     */
+ * @brief libère la configuration d'un héro
+ * @param config configuration
+ * @param freeContainer si true libère la config fournie
+ */
 void freeHeroConfig(HeroConfig* config, bool freeContainer);
 
 /**
-     * @brief libère la configuration de héros
-     * @param config configuration
-     * @param freeContainer si true libère la config fournie
-     */
+ * @brief libère la configuration de héros
+ * @param config configuration
+ * @param freeContainer si true libère la config fournie
+ */
 void freeHeroesConfig(HeroesConfig* config, bool freeContainer);
 
 /**
-     * @brief Affiche la configuration des héros
-     * @param heroesConfig configuration
-     * @param toPrintBefore à afficher avant chaque ligne de configuration
-     */
-void printHeroesConfig(HeroesConfig* heroesConfig, char* toPrintBefore);
+ * @brief Affiche la configuration des héros
+ * @param heroesConfig configuration
+ * @param toPrintBefore à afficher avant chaque ligne de configuration
+ */
+void printHeroesConfig(const HeroesConfig* heroesConfig, const char* toPrintBefore);
 #endif

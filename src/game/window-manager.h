@@ -1,37 +1,36 @@
 #if !defined(GAME_WINDOW_MANAGER_H)
 #define GAME_WINDOW_MANAGER_H
-#include <stdbool.h>
 
 /**
-     * @brief Largeur par défaut de la fenêtre
-     */
+ * @brief Largeur par défaut de la fenêtre
+ */
 #define WINDOW_DEFAULT_WIDTH 500
 /**
-     * @brief Hauteur par défaut de la fenêtre
-     */
+ * @brief Hauteur par défaut de la fenêtre
+ */
 #define WINDOW_DEFAULT_HEIGHT 300
 
 /**
-     * @brief Configuration de rendu
-     */
+ * @brief Configuration de rendu
+ */
 typedef struct
 {
     /**
-         * @brief Données à transmettre
-         */
+     * @brief Données à transmettre
+     */
     void* data;
 } RenderingConfig;
 
 /**
-     * @brief Centre la fenêtre
-     */
+ * @brief Centre la fenêtre
+ */
 void centerWindow();
 
 /**
-     * @brief Gère le rendu de fenêtre
-     * @param renderingConfig configuration de rendu (transmise à la fonction de rendu)
-     * @param customRenderingFunction fonction de rendu customisé, retourne la réussite des actions internes
-     * @return si le rendu à réussi
-     */
+ * @brief Gère le rendu de fenêtre
+ * @param renderingConfig configuration de rendu (transmise à la fonction de rendu)
+ * @param customRenderingFunction fonction de rendu customisé, retourne la réussite des actions internes
+ * @return si le rendu à réussi
+ */
 bool renderWindow(RenderingConfig* renderingConfig, bool (*customRenderingFunction)(RenderingConfig*));
 #endif
