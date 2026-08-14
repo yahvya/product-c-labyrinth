@@ -16,30 +16,35 @@
  * @param parser le parser
  * @return si la consumation réussie
  */
-bool consumeScale(GameMapConfig* config,yaml_parser_t* parser){
+bool consumeScale(GameMapConfig* config, yaml_parser_t* parser)
+{
     yaml_token_t token;
 
-    while(true){
-        if(!yaml_parser_scan(parser,&token)){
-            fputs("\nEchec de récupération du token lors de la consumation de l'echelle",stderr);
+    while (true)
+    {
+        if (!yaml_parser_scan(parser, &token))
+        {
+            fputs("\nEchec de récupération du token lors de la consumation de l'echelle", stderr);
             break;
         }
 
-        if(
+        if (
             token.type == YAML_DOCUMENT_END_TOKEN ||
             token.type == YAML_STREAM_END_TOKEN
-        ){
+        )
+        {
             yaml_token_delete(&token);
             break;
         }
 
-        switch(token.type){
+        switch (token.type)
+        {
             case YAML_SCALAR_TOKEN:
                 config->scale = atoi((char*)token.data.scalar.value);
                 yaml_token_delete(&token);
                 return true;
 
-            default:;
+            default: ;
         }
 
         yaml_token_delete(&token);
@@ -54,12 +59,14 @@ bool consumeScale(GameMapConfig* config,yaml_parser_t* parser){
  * @param parser le parser
  * @return si la consumation réussie
  */
-bool consumeTills(GameMapConfig* config,yaml_parser_t* parser){
+bool consumeTills(GameMapConfig* config, yaml_parser_t* parser)
+{
     // allocation de base
     config->tillsMapConfig.tillsMap = malloc(sizeof(GameMapTillConfig*));
 
-    if(config->tillsMapConfig.tillsMap == NULL){
-        fputs("\nEchec d'allocation de la map des tills sur la configuration de jeux",stderr);
+    if (config->tillsMapConfig.tillsMap == NULL)
+    {
+        fputs("\nEchec d'allocation de la map des tills sur la configuration de jeux", stderr);
         return false;
     }
 
@@ -69,34 +76,39 @@ bool consumeTills(GameMapConfig* config,yaml_parser_t* parser){
     yaml_token_t token;
 
     // nombre de blocs ouvert
-    bool firstBlocEncountered = false;
-    int blocTabCount = 0;
-    int countOfCurrentCols = 0;
-    int structValueCount = 0;
+    bool  firstBlocEncountered = false;
+    int   blocTabCount         = 0;
+    int   countOfCurrentCols   = 0;
+    int   structValueCount     = 0;
     void* tmpAddress;
 
-    while(true){
-        if(!yaml_parser_scan(parser,&token)){
-            fputs("\nEchec de lecture du token sur la configuration de jeux lors de la récupération des tills",stderr);
+    while (true)
+    {
+        if (!yaml_parser_scan(parser, &token))
+        {
+            fputs("\nEchec de lecture du token sur la configuration de jeux lors de la récupération des tills", stderr);
             break;
         }
 
-        if(
+        if (
             token.type == YAML_DOCUMENT_END_TOKEN ||
             token.type == YAML_STREAM_END_TOKEN
-        ){
+        )
+        {
             yaml_token_delete(&token);
             break;
         }
 
-        switch(token.type){
+        switch (token.type)
+        {
             case YAML_FLOW_SEQUENCE_START_TOKEN:
-                if(!firstBlocEncountered)
+                if (!firstBlocEncountered)
                     firstBlocEncountered = true;
 
                 blocTabCount++;
 
-                switch(blocTabCount){
+                switch (blocTabCount)
+                {
                     case 2:
                         // tab de nouvelle ligne
                         tmpAddress = realloc(
@@ -104,19 +116,22 @@ bool consumeTills(GameMapConfig* config,yaml_parser_t* parser){
                             (config->tillsMapConfig.countOfRows + 1) * sizeof(GameMapTillConfig*)
                         );
 
-                        if(tmpAddress == NULL){
-                            fputs("\nEchec d'allocation d'une nouvelle ligne lors de la consumation de la map tills",stderr);
+                        if (tmpAddress == NULL)
+                        {
+                            fputs("\nEchec d'allocation d'une nouvelle ligne lors de la consumation de la map tills",
+                                  stderr);
                             yaml_token_delete(&token);
                             return false;
                         }
 
                         config->tillsMapConfig.tillsMap = tmpAddress;
                         config->tillsMapConfig.countOfRows++;
-                    break;
+                        break;
 
                     case 3:
                         // tab de nouvelle colonne
-                        if(countOfCurrentCols != 0){
+                        if (countOfCurrentCols != 0)
+                        {
                             tmpAddress = realloc(
                                 config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1],
                                 (countOfCurrentCols + 1) * sizeof(GameMapTillConfig)
@@ -125,8 +140,9 @@ bool consumeTills(GameMapConfig* config,yaml_parser_t* parser){
                         else
                             tmpAddress = malloc(sizeof(GameMapTillConfig));
 
-                        if(tmpAddress == NULL){
-                            fputs("\nEchec de reallocation de colonne",stderr);
+                        if (tmpAddress == NULL)
+                        {
+                            fputs("\nEchec de reallocation de colonne", stderr);
                             yaml_token_delete(&token);
                             return false;
                         }
@@ -134,61 +150,66 @@ bool consumeTills(GameMapConfig* config,yaml_parser_t* parser){
                         config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1] = tmpAddress;
 
                         countOfCurrentCols++;
-                    break;
+                        break;
 
-                    default:;
+                    default: ;
                 }
-            break;
+                break;
 
             case YAML_FLOW_SEQUENCE_END_TOKEN:
                 blocTabCount--;
 
-                switch(blocTabCount){
+                switch (blocTabCount)
+                {
                     case 2:
                         // fin d'une colonne
                         structValueCount = 0;
-                    break;
+                        break;
 
                     case 1:
                         // fin d'une ligne
-                        if(countOfCurrentCols > config->tillsMapConfig.countOfCols)
+                        if (countOfCurrentCols > config->tillsMapConfig.countOfCols)
                             config->tillsMapConfig.countOfCols = countOfCurrentCols;
 
                         countOfCurrentCols = 0;
-                    break;
-                    default:;
+                        break;
+                    default: ;
                 }
-            break;
+                break;
 
             case YAML_SCALAR_TOKEN:
                 structValueCount++;
 
-                switch(structValueCount){
+                switch (structValueCount)
+                {
                     // valeur x
                     case 1:
-                        config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1][countOfCurrentCols - 1].x = atoi((char*)token.data.scalar.value);
-                    break;
+                        config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1][countOfCurrentCols - 1].
+                            x = atoi((char*)token.data.scalar.value);
+                        break;
 
                     case 2:
                         // valeur y
-                        config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1][countOfCurrentCols - 1].y = atoi((char*)token.data.scalar.value);
-                    break;
+                        config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1][countOfCurrentCols - 1].
+                            y = atoi((char*)token.data.scalar.value);
+                        break;
 
                     case 3:
                         // valeur id
-                        config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1][countOfCurrentCols - 1].id = atoi((char*)token.data.scalar.value);
-                    break;
+                        config->tillsMapConfig.tillsMap[config->tillsMapConfig.countOfRows - 1][countOfCurrentCols - 1].
+                            id = atoi((char*)token.data.scalar.value);
+                        break;
 
-                    default:;
+                    default: ;
                 }
-            break;
+                break;
 
-            default:;
+            default: ;
         }
 
         yaml_token_delete(&token);
 
-        if(firstBlocEncountered && blocTabCount == 0)
+        if (firstBlocEncountered && blocTabCount == 0)
             break;
     }
 
@@ -201,48 +222,55 @@ bool consumeTills(GameMapConfig* config,yaml_parser_t* parser){
  * @param parser le parser
  * @return si la consumation réussie
  */
-bool consumeItems(GameMapConfig* config,yaml_parser_t* parser){
+bool consumeItems(GameMapConfig* config, yaml_parser_t* parser)
+{
     yaml_token_t token;
 
     GameMapItemConfig* newItemAddress = NULL;
 
     bool firstBlocEncountered = false;
-    int blocMapCounter = 0;
-    int structValueCounter = 0;
+    int  blocMapCounter       = 0;
+    int  structValueCounter   = 0;
 
-    while(true){
-        if(!yaml_parser_scan(parser,&token)){
-            fputs("\nEchec de recupération du token lors de la consumation des items",stderr);
+    while (true)
+    {
+        if (!yaml_parser_scan(parser, &token))
+        {
+            fputs("\nEchec de recupération du token lors de la consumation des items", stderr);
             free(newItemAddress);
             return false;
         }
 
-        if(
+        if (
             token.type == YAML_DOCUMENT_END_TOKEN ||
             token.type == YAML_STREAM_END_TOKEN
-        ){
+        )
+        {
             yaml_token_delete(&token);
             free(newItemAddress);
             return false;
         }
 
-        switch(token.type){
+        switch (token.type)
+        {
             case YAML_FLOW_SEQUENCE_START_TOKEN:
-                if(!firstBlocEncountered)
+                if (!firstBlocEncountered)
                     firstBlocEncountered = true;
 
                 blocMapCounter++;
-            break;
+                break;
 
             case YAML_FLOW_SEQUENCE_END_TOKEN:
                 blocMapCounter--;
 
                 // ajout dans la liste de configuration
-                if(blocMapCounter == 1){
+                if (blocMapCounter == 1)
+                {
                     structValueCounter = 0;
 
-                    if(!listAppend(&config->itemsConfig,newItemAddress)){
-                        fputs("\nEchec d'allocation de la configuration d'item",stderr);
+                    if (!listAppend(&config->itemsConfig, newItemAddress))
+                    {
+                        fputs("\nEchec d'allocation de la configuration d'item", stderr);
                         yaml_token_delete(&token);
                         free(newItemAddress);
                         return false;
@@ -250,18 +278,20 @@ bool consumeItems(GameMapConfig* config,yaml_parser_t* parser){
 
                     newItemAddress = NULL;
                 }
-            break;
+                break;
 
             case YAML_SCALAR_TOKEN:
-                if(blocMapCounter != 2)
+                if (blocMapCounter != 2)
                     break;
 
                 // allocation d'une nouvelle configuration
-                if(newItemAddress == NULL){
+                if (newItemAddress == NULL)
+                {
                     newItemAddress = malloc(sizeof(GameMapItemConfig));
 
-                    if(newItemAddress == NULL){
-                        fputs("\nEchec d'allocation de la configuration d'item",stderr);
+                    if (newItemAddress == NULL)
+                    {
+                        fputs("\nEchec d'allocation de la configuration d'item", stderr);
                         yaml_token_delete(&token);
                         return false;
                     }
@@ -270,28 +300,29 @@ bool consumeItems(GameMapConfig* config,yaml_parser_t* parser){
                 // remplissage de la structure
                 structValueCounter++;
 
-                switch(structValueCounter){
+                switch (structValueCounter)
+                {
                     case 1:
                         newItemAddress->x = atoi((char*)token.data.scalar.value);
-                    break;
+                        break;
 
                     case 2:
                         newItemAddress->y = atoi((char*)token.data.scalar.value);
-                    break;
+                        break;
 
                     case 3:
                         newItemAddress->id = atoi((char*)token.data.scalar.value);
-                    break;
-                    default:;
+                        break;
+                    default: ;
                 }
-            break;
+                break;
 
-            default:;
+            default: ;
         }
 
         yaml_token_delete(&token);
 
-        if(firstBlocEncountered && blocMapCounter == 0)
+        if (firstBlocEncountered && blocMapCounter == 0)
             break;
     }
 
@@ -304,34 +335,39 @@ bool consumeItems(GameMapConfig* config,yaml_parser_t* parser){
  * @param parser le parser
  * @return si la consumation réussie
  */
-bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
+bool consumeEnemies(GameMapConfig* config, yaml_parser_t* parser)
+{
     yaml_token_t token;
 
     GameMapEnemyConfig* newEnemyAddress = NULL;
 
     bool firstBlocEncountered = false;
-    int blocMapCounter = 0;
-    int structValueCounter = 0;
+    int  blocMapCounter       = 0;
+    int  structValueCounter   = 0;
 
-    while(true){
-        if(!yaml_parser_scan(parser,&token)){
-            fputs("\nEchec de recupération du token lors de la consumation des ennemies",stderr);
+    while (true)
+    {
+        if (!yaml_parser_scan(parser, &token))
+        {
+            fputs("\nEchec de recupération du token lors de la consumation des ennemies", stderr);
             free(newEnemyAddress);
             return false;
         }
 
-        if(
+        if (
             token.type == YAML_DOCUMENT_END_TOKEN ||
             token.type == YAML_STREAM_END_TOKEN
-        ){
+        )
+        {
             yaml_token_delete(&token);
             free(newEnemyAddress);
             return false;
         }
 
-        switch(token.type){
+        switch (token.type)
+        {
             case YAML_FLOW_SEQUENCE_START_TOKEN:
-                if(!firstBlocEncountered)
+                if (!firstBlocEncountered)
                     firstBlocEncountered = true;
 
                 blocMapCounter++;
@@ -341,11 +377,13 @@ bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
                 blocMapCounter--;
 
                 // ajout dans la liste de configuration
-                if(blocMapCounter == 1){
+                if (blocMapCounter == 1)
+                {
                     structValueCounter = 0;
 
-                    if(!listAppend(&config->enemiesConfig, newEnemyAddress)){
-                        fputs("\nEchec d'allocation de la configuration d'ennemie",stderr);
+                    if (!listAppend(&config->enemiesConfig, newEnemyAddress))
+                    {
+                        fputs("\nEchec d'allocation de la configuration d'ennemie", stderr);
                         yaml_token_delete(&token);
                         free(newEnemyAddress);
                         return false;
@@ -356,15 +394,17 @@ bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
                 break;
 
             case YAML_SCALAR_TOKEN:
-                if(blocMapCounter != 2)
+                if (blocMapCounter != 2)
                     break;
 
                 // allocation d'une nouvelle configuration
-                if(newEnemyAddress == NULL){
+                if (newEnemyAddress == NULL)
+                {
                     newEnemyAddress = malloc(sizeof(GameMapEnemyConfig));
 
-                    if(newEnemyAddress == NULL){
-                        fputs("\nEchec d'allocation de la configuration d'ennemie",stderr);
+                    if (newEnemyAddress == NULL)
+                    {
+                        fputs("\nEchec d'allocation de la configuration d'ennemie", stderr);
                         yaml_token_delete(&token);
                         return false;
                     }
@@ -373,7 +413,8 @@ bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
                 // remplissage de la structure
                 structValueCounter++;
 
-                switch(structValueCounter){
+                switch (structValueCounter)
+                {
                     case 1:
                         newEnemyAddress->x = atoi((char*)token.data.scalar.value);
                         break;
@@ -385,28 +426,30 @@ bool consumeEnemies(GameMapConfig* config,yaml_parser_t* parser){
                     case 3:
                         newEnemyAddress->id = atoi((char*)token.data.scalar.value);
                         break;
-                    default:;
+                    default: ;
                 }
                 break;
 
-            default:;
+            default: ;
         }
 
         yaml_token_delete(&token);
 
-        if(firstBlocEncountered && blocMapCounter == 0)
+        if (firstBlocEncountered && blocMapCounter == 0)
             break;
     }
 
     return true;
 }
 
-void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
+void* loadGameMapConfig(yaml_parser_t* parser, char* parentDirPath)
+{
     // allocation de la map
     GameMapConfig* config = malloc(sizeof(GameMapConfig));
 
-    if(config == NULL){
-        fputs("\nEchec d'allocation de la map de jeux",stderr);
+    if (config == NULL)
+    {
+        fputs("\nEchec d'allocation de la map de jeux", stderr);
         return NULL;
     }
 
@@ -415,103 +458,116 @@ void* loadGameMapConfig(yaml_parser_t* parser,char* parentDirPath){
     newGenericListFrom(&config->itemsConfig);
     newGenericListFrom(&config->enemiesConfig);
 
-    int countOfKeysToLoad = 4;
-    bool nextIsKey = false;
+    int  countOfKeysToLoad = 4;
+    bool nextIsKey         = false;
 
     yaml_token_t token;
 
-    while(true){
-        if(!yaml_parser_scan(parser,&token)){
-            fputs("\nEchec de lecture du token lors de la lecture de configuration de map",stderr);
-            freeGameMapConfig(config,true);
+    while (true)
+    {
+        if (!yaml_parser_scan(parser, &token))
+        {
+            fputs("\nEchec de lecture du token lors de la lecture de configuration de map", stderr);
+            freeGameMapConfig(config, true);
             return NULL;
         }
 
-        if(
+        if (
             token.type == YAML_DOCUMENT_END_TOKEN ||
             token.type == YAML_STREAM_END_TOKEN
         )
             break;
 
-        switch(token.type){
+        switch (token.type)
+        {
             case YAML_KEY_TOKEN:
                 nextIsKey = true;
-            break;
+                break;
 
             case YAML_SCALAR_TOKEN:
-                if(!nextIsKey)
+                if (!nextIsKey)
                     break;
 
-                switch(countOfKeysToLoad){
+                switch (countOfKeysToLoad)
+                {
                     case 4:
-                        if(!consumeScale(config,parser)){
-                            fputs("\nEchec de lecture de l'echelle",stderr);
+                        if (!consumeScale(config, parser))
+                        {
+                            fputs("\nEchec de lecture de l'echelle", stderr);
                             FREE_AND_QUIT
                         }
-                    break;
+                        break;
 
                     case 3:
-                        if(!consumeTills(config,parser)){
-                            fputs("\nEchec de lecture des tills",stderr);
+                        if (!consumeTills(config, parser))
+                        {
+                            fputs("\nEchec de lecture des tills", stderr);
                             FREE_AND_QUIT
                         }
-                    break;
+                        break;
 
                     case 2:
-                        if(!consumeItems(config,parser)){
-                            fputs("\nEchec de lecture des items",stderr);
+                        if (!consumeItems(config, parser))
+                        {
+                            fputs("\nEchec de lecture des items", stderr);
                             FREE_AND_QUIT
                         }
-                    break;
+                        break;
 
                     case 1:
-                        if(!consumeEnemies(config,parser)){
-                            fputs("\nEchec de lecture des noms",stderr);
+                        if (!consumeEnemies(config, parser))
+                        {
+                            fputs("\nEchec de lecture des noms", stderr);
                             FREE_AND_QUIT
                         }
-                    break;
+                        break;
 
-                    default:;
+                    default: ;
                 }
 
                 nextIsKey = false;
                 countOfKeysToLoad--;
-            break;
+                break;
 
-            default:;
+            default: ;
         }
 
         yaml_token_delete(&token);
     }
 
-    if(countOfKeysToLoad != 0){
-        freeGameMapConfig(config,true);
+    if (countOfKeysToLoad != 0)
+    {
+        freeGameMapConfig(config, true);
         return NULL;
     }
 
     return config;
 }
 
-void freeGameMapConfig(GameMapConfig* mapConfig,bool freeContainer){
+void freeGameMapConfig(GameMapConfig* mapConfig, bool freeContainer)
+{
     assert(mapConfig != NULL && "La map de jeux à libérer est NULL");
 
-    if(mapConfig->tillsMapConfig.tillsMap != NULL){
-        if(mapConfig->tillsMapConfig.countOfRows != 0){
-            for(int rowIndex = 0; rowIndex < mapConfig->tillsMapConfig.countOfRows; rowIndex++)
+    if (mapConfig->tillsMapConfig.tillsMap != NULL)
+    {
+        if (mapConfig->tillsMapConfig.countOfRows != 0)
+        {
+            for (int rowIndex = 0; rowIndex < mapConfig->tillsMapConfig.countOfRows; rowIndex++)
                 free(mapConfig->tillsMapConfig.tillsMap[rowIndex]);
         }
 
         free(mapConfig->tillsMapConfig.tillsMap);
     }
 
-    freeGenericList(&mapConfig->itemsConfig,true);
-    freeGenericList(&mapConfig->enemiesConfig,true);
+    freeGenericList(&mapConfig->itemsConfig, true);
+    freeGenericList(&mapConfig->enemiesConfig, true);
 
-    if(freeContainer)
+    if (freeContainer)
         free(mapConfig);
 }
 
-void printMapConfig(GameMapConfig* config){
+void printMapConfig(GameMapConfig* config)
+{
     if (GAME_IS_IN_TEST_MODE != 1)
     {
         return;
@@ -521,24 +577,26 @@ void printMapConfig(GameMapConfig* config){
 
     printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
     printf("\n"CC_BBLUE"Configuration de map"CC_RESET"\n");
-    printf("\n"CC_BG_BLUE"Echelle d'affichage : %d"CC_RESET"\n",config->scale);
+    printf("\n"CC_BG_BLUE"Echelle d'affichage : %d"CC_RESET"\n", config->scale);
     printf(CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
 
-//    map des items
+    //    map des items
     printf("\t"CC_BBLUE"Configuration des tills"CC_RESET"\n");
     printf("\n\t"CC_BG_BLUE"Lignes x Colonnes : %d x %d"CC_RESET"\n",
-       config->tillsMapConfig.countOfRows,
-       config->tillsMapConfig.countOfCols
-   );
+           config->tillsMapConfig.countOfRows,
+           config->tillsMapConfig.countOfCols
+    );
 
-    for(int rowIndex = 0; rowIndex != config->tillsMapConfig.countOfRows; rowIndex++){
-        printf("\n\t\t"CC_BBLUE"Ligne %d"CC_RESET"\n\t\t\t",rowIndex + 1);
+    for (int rowIndex = 0; rowIndex != config->tillsMapConfig.countOfRows; rowIndex++)
+    {
+        printf("\n\t\t"CC_BBLUE"Ligne %d"CC_RESET"\n\t\t\t", rowIndex + 1);
 
-        for(int colIndex = 0; colIndex < config->tillsMapConfig.countOfCols; colIndex++){
+        for (int colIndex = 0; colIndex < config->tillsMapConfig.countOfCols; colIndex++)
+        {
             printf("[x= %d,y= %d,id= %d] ",
-               config->tillsMapConfig.tillsMap[rowIndex][colIndex].x,
-               config->tillsMapConfig.tillsMap[rowIndex][colIndex].y,
-               config->tillsMapConfig.tillsMap[rowIndex][colIndex].id
+                   config->tillsMapConfig.tillsMap[rowIndex][colIndex].x,
+                   config->tillsMapConfig.tillsMap[rowIndex][colIndex].y,
+                   config->tillsMapConfig.tillsMap[rowIndex][colIndex].id
             );
         }
     }
@@ -546,13 +604,14 @@ void printMapConfig(GameMapConfig* config){
     printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
     printf("\t"CC_BBLUE"Configuration des items"CC_RESET"\n");
 
-    while(config->itemsConfig.items != NULL){
-        GameMapItemConfig* itemConfig = (GameMapItemConfig*) config->itemsConfig.items->data;
+    while (config->itemsConfig.items != NULL)
+    {
+        GameMapItemConfig* itemConfig = (GameMapItemConfig*)config->itemsConfig.items->data;
 
         printf("\t\t[x= %d,y= %d,id= %d]\n",
-           itemConfig->x,
-           itemConfig->y,
-           itemConfig->id
+               itemConfig->x,
+               itemConfig->y,
+               itemConfig->id
         );
 
         config->itemsConfig.items = config->itemsConfig.items->nextItem;
@@ -563,13 +622,14 @@ void printMapConfig(GameMapConfig* config){
     printf("\n"CC_BLUE"------------------------------------------------------------------------"CC_RESET"\n");
     printf("\t"CC_BBLUE"Configuration des ennemies"CC_RESET"\n");
 
-    while(config->enemiesConfig.items != NULL){
-        GameMapEnemyConfig* enemyConfig = (GameMapEnemyConfig*) config->enemiesConfig.items->data;
+    while (config->enemiesConfig.items != NULL)
+    {
+        GameMapEnemyConfig* enemyConfig = (GameMapEnemyConfig*)config->enemiesConfig.items->data;
 
         printf("\t\t[x= %d,y= %d,id= %d]\n",
-            enemyConfig->x,
-            enemyConfig->y,
-            enemyConfig->id
+               enemyConfig->x,
+               enemyConfig->y,
+               enemyConfig->id
         );
 
         config->enemiesConfig.items = config->enemiesConfig.items->nextItem;

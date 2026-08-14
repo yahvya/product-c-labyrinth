@@ -1,4 +1,4 @@
-# Suppressions pour le bruit des bibliothèques tierces (X11, glfw, chargeur
+# Suppressions pour le bruit des bibliothèques tierces (X11, glfw, chargeur ...)
 
 {
    x11-xrm-init
@@ -55,3 +55,13 @@
    ...
    obj:*/libstdc++.so*
 }
+
+{
+   glfw-terminate-dlclose
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:_glfwPlatformFreeModule
+}
+
+# NOTE: un reliquat ~112 octets (definitely+indirectly lost) peut encore apparaitre, avec une pile d'appel entierement non resolue (???). C'est du bruit connu du JIT de Mesa/llvmpipe (rasterizer logiciel, cas typique sous WSL sans GPU passthrough)

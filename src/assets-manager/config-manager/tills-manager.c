@@ -23,16 +23,20 @@
     yaml_token_delete(&readToken);\
     return NULL;
 
-void* loadTillsConfig(yaml_parser_t* parser,char* parentDirPath){
+void* loadTillsConfig(yaml_parser_t* parser, char* parentDirPath)
+{
     assert(parser != NULL && "Le parser fourni pour la lecture de configuration des tills est NULL");
     assert(parentDirPath != NULL && "Le chemin parent fourni pour la lecture de configuration des tills est NULL");
-    assert(strlen(parentDirPath) < SUPPOSED_PATH_MAX_LEN && "La longueur du chemin fourni est supérieur à celle supposée sur le chargement des items");
+    assert(
+        strlen(parentDirPath) < SUPPOSED_PATH_MAX_LEN &&
+        "La longueur du chemin fourni est supérieur à celle supposée sur le chargement des items");
 
     // allocation de base de la configuration
-    TillsConfig* config = malloc(sizeof(TillsConfig)); 
+    TillsConfig* config = malloc(sizeof(TillsConfig));
 
-    if(config == NULL){
-        fputs("\nEchec d'allocation de la configuration des tills\n",stderr);
+    if (config == NULL)
+    {
+        fputs("\nEchec d'allocation de la configuration des tills\n", stderr);
         return NULL;
     }
 
@@ -41,86 +45,98 @@ void* loadTillsConfig(yaml_parser_t* parser,char* parentDirPath){
     // allocation de base de la map
     config->map = malloc(sizeof(ImageConfig));
 
-    if(config->map == NULL){
-        fputs("\nEchec d'allocation de la map des tills\n",stderr);
+    if (config->map == NULL)
+    {
+        fputs("\nEchec d'allocation de la map des tills\n", stderr);
         free(config);
         return NULL;
     }
 
     // parsing du fichier
     yaml_token_t readToken;
-    bool nextIsKey = false;
+    bool         nextIsKey = false;
 
-    while(true){
-        if(!yaml_parser_scan(parser,&readToken)){
-            fputs("\nEchec de lecture de token lors du parsing de configuration de tills\n",stderr);
+    while (true)
+    {
+        if (!yaml_parser_scan(parser, &readToken))
+        {
+            fputs("\nEchec de lecture de token lors du parsing de configuration de tills\n", stderr);
             FREE_RESOURCES_AND_QUIT
         }
 
-        if(
+        if (
             readToken.type == YAML_DOCUMENT_END_TOKEN ||
             readToken.type == YAML_STREAM_END_TOKEN
-        ){
+        )
+        {
             yaml_token_delete(&readToken);
             break;
         }
 
-        switch(readToken.type){
+        switch (readToken.type)
+        {
             case YAML_KEY_TOKEN:
                 nextIsKey = true;
-            break;
+                break;
 
             case YAML_SCALAR_TOKEN:
-                if(nextIsKey){
+                if (nextIsKey)
+                {
                     // agrandissement de l'espace alloué
-                    void* tmpAddress = realloc(config->map,sizeof(ImageConfig) * (config->countOfTills + 1));
+                    void* tmpAddress = realloc(config->map, sizeof(ImageConfig) * (config->countOfTills + 1));
 
-                    if(tmpAddress == NULL){
-                        fputs("\nEchec de reallocation d'adresse lors du parsing de configuration de tills\n",stderr);
+                    if (tmpAddress == NULL)
+                    {
+                        fputs("\nEchec de reallocation d'adresse lors du parsing de configuration de tills\n", stderr);
                         FREE_RESOURCES_AND_QUIT
                     }
 
                     // création de la configuration
-                    config->map = tmpAddress;
+                    config->map              = tmpAddress;
                     ImageConfig createdImage = createImageFromConfig(parser, parentDirPath);
 
-                    if(createdImage.errorState){
-                        fputs("\nEchec de parsing de la configuration d'image lors du parsing de configuration de tills\n",stderr);
-                        freeImageConfig(&createdImage,false);
+                    if (createdImage.errorState)
+                    {
+                        fputs(
+                            "\nEchec de parsing de la configuration d'image lors du parsing de configuration de tills\n",
+                            stderr);
+                        freeImageConfig(&createdImage, false);
                         FREE_RESOURCES_AND_QUIT
                     }
 
                     createdImage.id = atoi((char*)readToken.data.scalar.value);
                     config->countOfTills++;
-                    memcpy(config->map + (config->countOfTills - 1),&createdImage,sizeof(ImageConfig));
+                    memcpy(config->map + (config->countOfTills - 1), &createdImage, sizeof(ImageConfig));
 
                     // attente de la clé suivante
                     nextIsKey = false;
                 }
-            break;
+                break;
 
-            default:;
+            default: ;
         }
-    
+
         yaml_token_delete(&readToken);
     }
 
     return config;
 }
 
-void freeTillsConfig(TillsConfig* config,bool freeContainer){
+void freeTillsConfig(TillsConfig* config, bool freeContainer)
+{
     assert(config != NULL && "Configuration d'image NULL pour la libération");
 
-    for(int i = 0; i < config->countOfTills; i++)
-        freeImageConfig(&config->map[i],false);
+    for (int i = 0; i < config->countOfTills; i++)
+        freeImageConfig(&config->map[i], false);
 
     free(config->map);
 
-    if(freeContainer)
+    if (freeContainer)
         free(config);
 }
 
-void printTillsConfig(TillsConfig* config,char* toPrintBefore){
+void printTillsConfig(TillsConfig* config, char* toPrintBefore)
+{
     if (GAME_IS_IN_TEST_MODE != 1)
     {
         return;
@@ -130,24 +146,25 @@ void printTillsConfig(TillsConfig* config,char* toPrintBefore){
 
     printf(CC_BLUE"\n%s------------------------------------------------------------------------\n",TO_PRINT);
     printf(CC_BBLUE"\n%sConfiguration de tills\n"CC_RESET,TO_PRINT);
-    printf(CC_BG_BLUE"\n%sNombre d'elements : %d\n",TO_PRINT,config->countOfTills);
+    printf(CC_BG_BLUE"\n%sNombre d'elements : %d\n",TO_PRINT, config->countOfTills);
     printf("\n%sListe des elements\n"CC_RESET,TO_PRINT);
     printf(CC_BLUE"%s------------------------------------------------------------------------\n"CC_RESET,TO_PRINT);
 
     char spaceBuffer[SPACE_BUFFER_SIZE];
-    memset(spaceBuffer,0,sizeof(char) * SPACE_BUFFER_SIZE);
+    memset(spaceBuffer, 0, sizeof(char) * SPACE_BUFFER_SIZE);
 
-    if(toPrintBefore != NULL)
-        strcpy(spaceBuffer,toPrintBefore);
-    
+    if (toPrintBefore != NULL)
+        strcpy(spaceBuffer, toPrintBefore);
+
     strncat(
         spaceBuffer,
         "\t",
         sizeof(char) * (SPACE_BUFFER_SIZE - (toPrintBefore != NULL ? strlen(toPrintBefore) : 0))
     );
 
-    for(int i = 0; i < config->countOfTills; i++){
-        printImageConfig(&config->map[i],toPrintBefore);
+    for (int i = 0; i < config->countOfTills; i++)
+    {
+        printImageConfig(&config->map[i], toPrintBefore);
         printf("\n");
     }
 

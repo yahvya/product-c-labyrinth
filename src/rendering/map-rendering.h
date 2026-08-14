@@ -9,5 +9,5 @@
  * @param mapConfig Configuration de la disposition actuelle de la map
  * @return
  */
-bool renderMapFromConfig(GameConfig* gameConfig,GameMapConfig* mapConfig);
+bool renderMapFromConfig(GameConfig* gameConfig, GameMapConfig* mapConfig);
 #endif

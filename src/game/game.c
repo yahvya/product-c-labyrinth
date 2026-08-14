@@ -14,27 +14,28 @@
 // ressources du jeu
 static GameConfig* gameConfig = NULL;
 
-bool initializeGame(){
+bool initializeGame()
+{
     SetTraceLogLevel(GAME_IS_IN_TEST_MODE == 1 ? LOG_ALL : LOG_ERROR | LOG_WARNING | LOG_FATAL);
 
-    InitWindow(0,0,"Initialize raylib");
+    InitWindow(0, 0, "Initialize raylib");
 
-    if(!IsWindowReady())
+    if (!IsWindowReady())
         return false;
 
     gameConfig = loadGameConfig();
 
-    if(gameConfig == NULL)
+    if (gameConfig == NULL)
         return false;
 
-    LOAD_OR_QUIT(loadItemsImages,gameConfig)
-    LOAD_OR_QUIT(loadTillsImages,gameConfig)
-    LOAD_OR_QUIT(loadEnemiesImages,gameConfig)
-    LOAD_OR_QUIT(loadHeroesImages,gameConfig)
+    LOAD_OR_QUIT(loadItemsImages, gameConfig)
+    LOAD_OR_QUIT(loadTillsImages, gameConfig)
+    LOAD_OR_QUIT(loadEnemiesImages, gameConfig)
+    LOAD_OR_QUIT(loadHeroesImages, gameConfig)
 
     SetWindowTitle("Labyrinth Game");
     SetWindowIcon(gameConfig->windowIcon);
-    SetWindowSize(WINDOW_DEFAULT_WIDTH,WINDOW_DEFAULT_HEIGHT);
+    SetWindowSize(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT);
     SetWindowFocused();
     // @todo Voir pour les FPS
     centerWindow();
@@ -44,11 +45,12 @@ bool initializeGame(){
     return true;
 }
 
-void startGame(){
+void startGame()
+{
     TraceLog(LOG_INFO, "Game started");
 
     GameRenderingConfig gameRenderingConfig = {
-        .gameConfig = gameConfig,
+        .gameConfig               = gameConfig,
         .currentRenderingFunction = renderGameHome
     };
 
@@ -57,16 +59,19 @@ void startGame(){
     };
 
     // rendu du jeu
-    while(!WindowShouldClose()){
-        if(!renderWindow(&renderingConfig,gameRenderingConfig.currentRenderingFunction)){
-            fputs("Echec de rendu de fenêtre",stderr);
+    while (!WindowShouldClose())
+    {
+        if (!renderWindow(&renderingConfig, gameRenderingConfig.currentRenderingFunction))
+        {
+            fputs("Echec de rendu de fenêtre", stderr);
             break;
         }
     }
 }
 
-void closeGame(){
-    freeGameConfig(gameConfig,true);
+void closeGame()
+{
+    freeGameConfig(gameConfig, true);
     CloseWindow();
 
     TraceLog(LOG_INFO, "Game closed");

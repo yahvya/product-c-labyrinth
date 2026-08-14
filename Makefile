@@ -18,6 +18,6 @@ launch:
 
 # lancement le projet sous unix avec valgrind
 launch-unix:
-	cd build && make && clear && valgrind -s --leak-check=full --show-leak-kinds=definite,indirect,possible --track-origins=yes --suppressions=../valgrind.supp ./game
+	cd build && make && clear && valgrind -s --leak-check=full --show-leak-kinds=definite,indirect,possible --track-origins=yes --suppressions=../valgrind.supp  ./game
 
 .PHONY: init build

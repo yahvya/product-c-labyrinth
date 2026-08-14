@@ -3,7 +3,8 @@
 #include <assert.h>
 #include <stddef.h>
 
-void centerWindow(){
+void centerWindow()
+{
     int currentMonitorId = GetCurrentMonitor();
 
     SetWindowPosition(
@@ -12,13 +13,14 @@ void centerWindow(){
     );
 }
 
-bool renderWindow(RenderingConfig* renderingConfig,bool (*customRenderingFunction)(RenderingConfig*)){
+bool renderWindow(RenderingConfig * renderingConfig, bool(*customRenderingFunction)(RenderingConfig *))
+{
     assert(renderingConfig != NULL && "La configuration de rendu fournie est NULL");
     assert(customRenderingFunction != NULL && "La fonction de rendu fournie est NULL");
 
     BeginDrawing();
-        ClearBackground(RAYWHITE);
-        bool successState = customRenderingFunction(renderingConfig);
+    ClearBackground(RAYWHITE);
+    bool successState = customRenderingFunction(renderingConfig);
     EndDrawing();
 
     return successState;
