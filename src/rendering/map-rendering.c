@@ -1,9 +1,8 @@
 #include "map-rendering.h"
 #include "../assets-manager/config-manager/tills-manager.h"
 
-bool renderMapFromConfig(GameConfig* gameConfig, GameMapConfig* mapConfig)
+bool drawTills(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
 {
-    // dessin des tills
     GameTillsMap tillsMapConfig = mapConfig->tillsMapConfig;
 
     for (int rows = 0; rows < tillsMapConfig.countOfRows; rows++)
@@ -52,4 +51,9 @@ bool renderMapFromConfig(GameConfig* gameConfig, GameMapConfig* mapConfig)
     }
 
     return true;
+}
+
+bool renderMapFromConfig(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
+{
+    return drawTills(gameConfig, mapConfig);
 }

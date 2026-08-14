@@ -9,5 +9,13 @@
  * @param mapConfig Configuration de la disposition actuelle de la map
  * @return
  */
-bool renderMapFromConfig(GameConfig* gameConfig, GameMapConfig* mapConfig);
+bool renderMapFromConfig(const GameConfig* gameConfig, const GameMapConfig* mapConfig);
+
+/**
+ * @brief Dessine les tills de la map
+ * @param gameConfig Configuration du jeux
+ * @param mapConfig Configuration de la disposition actuelle de la map
+ * @return Etat de succès du dessin
+ */
+bool drawTills(const GameConfig* gameConfig, const GameMapConfig* mapConfig);
 #endif
