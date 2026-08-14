@@ -9,7 +9,8 @@
  * @param imageConfig  Configuration de l'image
  * @param mapConfig  Configuration de la map
  * @param texturePosition  Configuration de la position de l'image
+ * @param ticksPerFrame  Nombre de rendus entre deux changements de frame d'animation
  * @return
  */
-bool renderImageFromConfig(ImageConfig* imageConfig, const GameMapConfig* mapConfig, Vector2 texturePosition);
+bool renderImageFromConfig(ImageConfig* imageConfig, const GameMapConfig* mapConfig, Vector2 texturePosition, int ticksPerFrame);
 #endif

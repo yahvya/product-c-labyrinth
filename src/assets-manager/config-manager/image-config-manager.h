@@ -73,6 +73,10 @@ typedef struct
      * @brief Etat d'erreur
      */
     bool      errorState;
+    /**
+     * @brief Nombre de rendus effectués depuis le dernier changement de frame d'animation
+     */
+    int       animationTicks;
 } ImageConfig;
 
 /**

@@ -1,6 +1,6 @@
 #include "rendering.h"
 
-bool renderImageFromConfig(ImageConfig* imageConfig, const GameMapConfig* mapConfig, const Vector2 texturePosition)
+bool renderImageFromConfig(ImageConfig* imageConfig, const GameMapConfig* mapConfig, Vector2 texturePosition, int ticksPerFrame)
 {
     // rotation des images pour avoir l'animation visuelle
     const GenericListItem* currentItem = imageConfig->linkedImages.items;
@@ -19,12 +19,23 @@ bool renderImageFromConfig(ImageConfig* imageConfig, const GameMapConfig* mapCon
     // dessin
     const Texture2D* texture = (Texture2D*)currentItem->data;
 
+    texturePosition.x = texturePosition.x * mapConfig->scale;
+    texturePosition.y = texturePosition.y * mapConfig->scale;
+        
     DrawTextureEx(*texture, texturePosition, (float)imageConfig->rotation, (float)mapConfig->scale, WHITE);
 
-    // avance du curseur vers la prochaine frame d'animation, bouclage en fin de liste
-    imageConfig->linkedImages.items = currentItem->nextItem != NULL
-                                          ? currentItem->nextItem
-                                          : imageConfig->linkedImages.listStart;
+    // avance du curseur vers la prochaine frame d'animation (au rythme de ticksPerFrame
+    // rendus par frame, pas à chaque rendu), bouclage en fin de liste
+    imageConfig->animationTicks++;
+
+    if (imageConfig->animationTicks >= ticksPerFrame)
+    {
+        imageConfig->animationTicks = 0;
+
+        imageConfig->linkedImages.items = currentItem->nextItem != NULL
+                                              ? currentItem->nextItem
+                                              : imageConfig->linkedImages.listStart;
+    }
 
     return true;
 }

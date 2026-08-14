@@ -3,6 +3,21 @@
 #include "../assets-manager/config-manager/items-manager.h"
 #include "../assets-manager/config-manager/tills-manager.h"
 
+/**
+ * @brief Nombre de rendus entre deux changements de frame d'animation des ennemies
+ */
+#define ENEMY_ANIMATION_TICKS_PER_FRAME 3
+
+/**
+ * @brief Nombre de rendus entre deux changements de frame d'animation des items
+ */
+#define ITEM_ANIMATION_TICKS_PER_FRAME 15
+
+/**
+ * @brief Nombre de rendus entre deux changements de frame d'animation des tills
+ */
+#define TILL_ANIMATION_TICKS_PER_FRAME 6
+
 bool drawEnemies(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
 {
     const GenericList enemiesConfiguration = mapConfig->enemiesConfig;
@@ -43,7 +58,7 @@ bool drawEnemies(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
             .y = (float)enemyMapConfig->y
         };
 
-        renderImageFromConfig(enemyConfigImage, mapConfig, tillPosition);
+        renderImageFromConfig(enemyConfigImage, mapConfig, tillPosition, ENEMY_ANIMATION_TICKS_PER_FRAME);
 
         currentNode = currentNode->nextItem;
     }
@@ -80,7 +95,7 @@ bool drawItems(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
             .y = (float)itemConfig->y
         };
 
-        renderImageFromConfig(itemConfigImage, mapConfig, tillPosition);
+        renderImageFromConfig(itemConfigImage, mapConfig, tillPosition, ITEM_ANIMATION_TICKS_PER_FRAME);
 
         currentNode = currentNode->nextItem;
     }
@@ -112,7 +127,7 @@ bool drawTills(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
                 .y = (float)tillConfiguration.y
             };
 
-            renderImageFromConfig(tillConfig, mapConfig, tillPosition);
+            renderImageFromConfig(tillConfig, mapConfig, tillPosition, TILL_ANIMATION_TICKS_PER_FRAME);
         }
     }
 

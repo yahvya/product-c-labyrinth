@@ -33,7 +33,7 @@ bool initializeGame()
     LOAD_OR_QUIT(loadEnemiesImages, gameConfig)
     LOAD_OR_QUIT(loadHeroesImages, gameConfig)
 
-    SetWindowTitle("Labyrinth Game");
+    SetWindowTitle(WINDOW_TITLE);
     SetWindowIcon(gameConfig->windowIcon);
     SetWindowSize(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT);
     SetWindowFocused();

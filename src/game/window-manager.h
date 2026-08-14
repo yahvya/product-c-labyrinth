@@ -4,6 +4,11 @@
 #include <stdbool.h>
 
 /**
+ * Nom du jeux / de la fenêtre
+ */
+#define WINDOW_TITLE "Labyrinth Game"
+
+/**
  * @brief Largeur par défaut de la fenêtre
  */
 #define WINDOW_DEFAULT_WIDTH 0
@@ -13,14 +18,16 @@
 #define WINDOW_DEFAULT_HEIGHT 0
 
 /**
- * @brief Largeur de la fenêtre d'accueil
+ * @brief Largeur de la fenêtre d'accueil (grille de home-config/map.yaml : 29 colonnes de 32px
+ * + débordement de la dernière colonne + large marge, pour que ce débordement soit négligeable)
  */
-#define WINDOW_HOME_WIDTH 800
+#define WINDOW_HOME_WIDTH 1065
 
 /**
- * @brief Hauteur de la fenêtre d'accueil
+ * @brief Hauteur de la fenêtre d'accueil (grille de home-config/map.yaml : 23 lignes de 32px
+ * + débordement de la dernière ligne + large marge, pour que ce débordement soit négligeable)
  */
-#define WINDOW_HOME_HEIGHT 600
+#define WINDOW_HOME_HEIGHT 870
 
 /**
  * @brief Largeur de la fenêtre de jeu
