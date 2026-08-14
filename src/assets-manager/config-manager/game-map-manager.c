@@ -118,8 +118,8 @@ static bool consumeTills(GameMapConfig* config, yaml_parser_t* parser)
 
                         if (tmpAddress == NULL)
                         {
-                            fputs("\nEchec d'allocation d'une nouvelle ligne lors de la consumation de la map tills",
-                                  stderr);
+                            TraceLog(LOG_ERROR,
+                                     "\nEchec d'allocation d'une nouvelle ligne lors de la consumation de la map tills");
                             yaml_token_delete(&token);
                             return false;
                         }

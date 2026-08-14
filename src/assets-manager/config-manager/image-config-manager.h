@@ -10,8 +10,9 @@
  */
 #define SUPPOSED_ID_MAX_LEN 15
 
-#include "../../utils/generic-list/generic-list.h"
+#include <stdbool.h>
 #include <yaml.h>
+#include "../../utils/generic-list/generic-list.h"
 
 /**
  * @brief Type d'image

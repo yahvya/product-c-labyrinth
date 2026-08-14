@@ -1,6 +1,8 @@
 #if !defined(GAME_WINDOW_MANAGER_H)
 #define GAME_WINDOW_MANAGER_H
 
+#include <stdbool.h>
+
 /**
  * @brief Largeur par défaut de la fenêtre
  */

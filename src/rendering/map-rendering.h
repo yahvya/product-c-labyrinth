@@ -26,4 +26,12 @@ bool drawTills(const GameConfig* gameConfig, const GameMapConfig* mapConfig);
  * @return Etat de succès des dessins
  */
 bool drawItems(const GameConfig* gameConfig, const GameMapConfig* mapConfig);
+
+/**
+ * Dessine les enemies de la map
+ * @param gameConfig Configuration du jeux
+ * @param mapConfig Configuration de la disposition actuelle de la map
+ * @return Etat de succès des dessins
+ */
+bool drawEnemies(const GameConfig* gameConfig, const GameMapConfig* mapConfig);
 #endif

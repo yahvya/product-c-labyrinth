@@ -75,7 +75,7 @@ static bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath)
 
     if (file == NULL)
     {
-        fprintf(stderr, "Echec d'ouverture du fichier de configuration <%s>", configFilePath);
+        TraceLog(LOG_ERROR, "Echec d'ouverture du fichier de configuration <%s>", configFilePath);
         return false;
     }
 
@@ -123,9 +123,9 @@ static bool loadEnemyActions(EnemyConfig* enemyConfig, char* configFilePath)
 
                 if (actionKey == -1)
                 {
-                    fprintf(stderr,
-                            "\nL'indice de l'action <%s> n'a pas été trouvé, lors du chargement des actions ennemie",
-                            (char*)token.data.scalar.value);
+                    TraceLog(LOG_ERROR,
+                             "\nL'indice de l'action <%s> n'a pas été trouvé, lors du chargement des actions ennemie",
+                             (char*)token.data.scalar.value);
                     stop = true;
                     break;
                 }
@@ -234,6 +234,8 @@ static bool consumeEnemyIn(yaml_parser_t* parser, yaml_token_t* token, EnemiesCo
                             TraceLog(LOG_ERROR, "\nEchec du chargement des actions hero");
                             FREE_CONSUME_AND_QUIT
                         }
+
+                        enemy.currentAction = ENEMY_MAX_FOR_ARRAY_KEYS;
                         break;
 
                     case 6:
@@ -412,4 +414,14 @@ void printEnemiesConfig(const EnemiesConfig* enemiesConfig, char* toPrintBefore)
                TO_PRINT);
         printf("\n");
     }
+}
+
+EnemyConfig* getEnemyImageConfigFromId(const int id, const EnemiesConfig* enemiesConfig)
+{
+    if (id > enemiesConfig->countOfEnemies)
+    {
+        return NULL;
+    }
+
+    return enemiesConfig->map + (id - 1);
 }

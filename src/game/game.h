@@ -5,6 +5,7 @@
  */
 #define GAME_IS_IN_TEST_MODE 1
 
+#include <stdbool.h>
 #include "./window-manager.h"
 #include "../assets-manager/config-manager/config-manager.h"
 

@@ -21,7 +21,7 @@ void* loadConfig(char* path, void* (*treatmentFunction)(yaml_parser_t*, const ch
 
     if (configFile == NULL)
     {
-        fprintf(stderr, "\nEchec de lecture d'ouverture du fichier de configuration <%s>\n", path);
+        TraceLog(LOG_ERROR, "\nEchec de lecture d'ouverture du fichier de configuration <%s>\n", path);
         return NULL;
     }
 

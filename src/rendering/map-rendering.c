@@ -3,6 +3,54 @@
 #include "../assets-manager/config-manager/items-manager.h"
 #include "../assets-manager/config-manager/tills-manager.h"
 
+bool drawEnemies(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
+{
+    const GenericList enemiesConfiguration = mapConfig->enemiesConfig;
+
+    if (enemiesConfiguration.errorState)
+    {
+        TraceLog(LOG_ERROR, "Erreur lors du chargement des ennemies, la liste a un statut d'erreur à true");
+        return false;
+    }
+
+    const GenericListItem* currentNode = enemiesConfiguration.items;
+
+    while (currentNode != NULL)
+    {
+        const GameMapEnemyConfig* enemyMapConfig = (GameMapEnemyConfig*)currentNode->data;
+        const EnemyConfig*        enemyConfig    = getEnemyImageConfigFromId(enemyMapConfig->id, gameConfig->enemiesConfig);
+
+        if (enemyConfig == NULL)
+        {
+            TraceLog(LOG_ERROR, "L'ennemi id %d n'existe pas ou n'a pas été chargé", enemyMapConfig->id);
+            currentNode = currentNode->nextItem;
+
+            continue;
+        }
+
+        ImageConfig* enemyConfigImage = enemyConfig->actionsMap[enemyConfig->currentAction].framesConfig;
+
+        if (enemyConfigImage == NULL)
+        {
+            TraceLog(LOG_ERROR, "Ennemie non trouvé id : %d", enemyMapConfig->id);
+            currentNode = currentNode->nextItem;
+
+            continue;
+        }
+
+        const Vector2 tillPosition = {
+            .x = (float)enemyMapConfig->x,
+            .y = (float)enemyMapConfig->y
+        };
+
+        renderImageFromConfig(enemyConfigImage, mapConfig, tillPosition);
+
+        currentNode = currentNode->nextItem;
+    }
+
+    return true;
+}
+
 bool drawItems(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
 {
     const GenericList itemsConfiguration = mapConfig->itemsConfig;
@@ -73,6 +121,5 @@ bool drawTills(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
 
 bool renderMapFromConfig(const GameConfig* gameConfig, const GameMapConfig* mapConfig)
 {
-    return drawTills(gameConfig, mapConfig) &&
-        drawItems(gameConfig, mapConfig);
+    return drawTills(gameConfig, mapConfig) && drawItems(gameConfig, mapConfig) && drawEnemies(gameConfig, mapConfig);
 }

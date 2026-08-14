@@ -121,7 +121,7 @@ void* loadItemsConfig(yaml_parser_t* parser, const char* parentDirPath)
 
                     if (!yaml_parser_initialize(&internalParser))
                     {
-                        fprintf(stderr, "Echec d'initialisation du parser yaml lors de la configuration des items");
+                        TraceLog(LOG_ERROR, "Echec d'initialisation du parser yaml lors de la configuration des items");
                         FREE_RESOURCES_AND_QUIT
                     }
 
@@ -132,9 +132,9 @@ void* loadItemsConfig(yaml_parser_t* parser, const char* parentDirPath)
 
                     if (file == NULL)
                     {
-                        fprintf(stderr,
-                                "Echec d'ouverture de la configuration sur le chemin suivant <%s> lors de la configuration des items",
-                                configFilePath);
+                        TraceLog(LOG_ERROR,
+                                 "Echec d'ouverture de la configuration sur le chemin suivant <%s> lors de la configuration des items",
+                                 configFilePath);
                         yaml_parser_delete(&internalParser);
                         FREE_RESOURCES_AND_QUIT
                     }
@@ -148,9 +148,8 @@ void* loadItemsConfig(yaml_parser_t* parser, const char* parentDirPath)
 
                     if (createdImage.errorState)
                     {
-                        fputs(
-                            "\nEchec de parsing de la configuration d'image lors du parsing de configuration des items\n",
-                            stderr);
+                        TraceLog(LOG_ERROR,
+                                 "\nEchec de parsing de la configuration d'image lors du parsing de configuration des items\n");
                         freeImageConfig(&createdImage, false);
                         fclose(file);
                         FREE_RESOURCES_AND_QUIT

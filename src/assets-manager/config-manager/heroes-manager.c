@@ -84,7 +84,7 @@ static bool loadHeroActions(HeroConfig* heroConfig, char* configFilePath)
 
     if (file == NULL)
     {
-        fprintf(stderr, "Echec d'ouverture du fichier de configuration <%s>", configFilePath);
+        TraceLog(LOG_ERROR, "Echec d'ouverture du fichier de configuration <%s>", configFilePath);
         return false;
     }
 
@@ -132,9 +132,9 @@ static bool loadHeroActions(HeroConfig* heroConfig, char* configFilePath)
 
                 if (actionKey == -1)
                 {
-                    fprintf(stderr,
-                            "\nL'indice de l'action <%s> n'a pas été trouvé, lors du chargement des actions hero",
-                            (char*)token.data.scalar.value);
+                    TraceLog(LOG_ERROR,
+                             "\nL'indice de l'action <%s> n'a pas été trouvé, lors du chargement des actions hero",
+                             (char*)token.data.scalar.value);
                     stop = true;
                     break;
                 }

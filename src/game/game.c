@@ -42,8 +42,6 @@ bool initializeGame()
 
     TraceLog(LOG_INFO, "Game initialized");
 
-    printItemsConfig(gameConfig->itemsConfig, NULL);
-
     return true;
 }
 

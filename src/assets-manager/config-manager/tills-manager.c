@@ -95,9 +95,8 @@ void* loadTillsConfig(yaml_parser_t* parser, const char* parentDirPath)
 
                     if (createdImage.errorState)
                     {
-                        fputs(
-                            "\nEchec de parsing de la configuration d'image lors du parsing de configuration de tills\n",
-                            stderr);
+                        TraceLog(LOG_ERROR,
+                                 "\nEchec de parsing de la configuration d'image lors du parsing de configuration de tills\n");
                         freeImageConfig(&createdImage, false);
                         FREE_RESOURCES_AND_QUIT
                     }

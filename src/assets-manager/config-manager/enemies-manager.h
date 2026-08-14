@@ -6,17 +6,17 @@
 /**
  * @brief Longueur maximale supposée du nom d'un ennemie
  */
-#define SUPPOSED_ENEMY_NAME_MAX_LEN 20
+#define SUPPOSED_ENEMY_NAME_MAX_LEN 13
 
 /**
  * @brief Longueur max supposée du nom d'une action ennemie
  */
-#define SUPPOSED_ENEMY_ACTION_MAX_LEN 40
+#define SUPPOSED_ENEMY_ACTION_MAX_LEN 20
 
 /**
  * @brief Longueur max supposée de l'id d'un ennemie
  */
-#define SUPPOSED_ENEMY_ID_MAX_LEN 15
+#define SUPPOSED_ENEMY_ID_MAX_LEN 4
 
 /**
  * @brief Liste des actions ennemie
@@ -63,6 +63,12 @@ typedef struct
      * @brief Nom de l'ennemie
      */
     char name[SUPPOSED_ENEMY_NAME_MAX_LEN];
+
+    /**
+     * @brief Action courante de l'ennemi.
+     * @attention Chargé par défaut sur ENEMY_MAX_FOR_ARRAY_KEYS
+     */
+    EnemyAction currentAction;
 
     /**
      * @brief Id ennemie
@@ -126,4 +132,12 @@ void freeEnemiesConfig(EnemiesConfig* config, bool freeContainer);
  * @param toPrintBefore à afficher avant chaque ligne de configuration
  */
 void printEnemiesConfig(const EnemiesConfig* enemiesConfig, char* toPrintBefore);
+
+/**
+ * Fourni un des ennemies de la configuration à partir de son id
+ * @param id Identifiant de l'ennemie
+ * @param enemiesConfig Configuration des items
+ * @return La configuration de l'ennemie ou null si non trouvé
+ */
+EnemyConfig* getEnemyImageConfigFromId(int id, const EnemiesConfig* enemiesConfig);
 #endif

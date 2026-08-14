@@ -1,6 +1,8 @@
 #if !defined(UTILS_GENERIC_LIST_GENERIC_LIST_H)
 #define UTILS_GENERIC_LIST_GENERIC_LIST_H
 
+#include <stdbool.h>
+
 /**
  * @brief Liste chainée générique (items)
  */
